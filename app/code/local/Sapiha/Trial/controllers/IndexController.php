@@ -1,12 +1,23 @@
 <?php
-Class Sapiha_Trial_IndexController extends Mage_Core_Controller_Front_Action
+
+class Sapiha_Trial_IndexController extends Mage_Core_Controller_Front_Action
 {
-    public function IndexAction()
+    /**
+     * Test controller
+     *
+     * @return void
+     */
+    public function indexAction()
     {
         echo "Hello Magento";
     }
 
-    public function AdvertisingAction()
+    /**
+     * Load advertising block
+     *
+     * @return void
+     */
+    public function advertisingAction()
     {
         $this->loadLayout();
         $this->renderLayout();

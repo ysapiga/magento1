@@ -1,15 +1,27 @@
 <?php
+
 class Sapiha_Trial_Block_Advertising extends Mage_Core_Block_Template
 {
-
+    /**
+     * Check permission for block load
+     *
+     * @return bool
+     */
     public function couldBeShowed()
     {
         $permission = $this->checkAction();
-        if(Mage::registry('current_product') && Mage::registry('current_product')->getSku()=="advertising"){
+        $currentProduct = Mage::registry('current_product');
+        if (isset($currentProduct) && $currentProduct->getSku()=="advertising") {
             $permission = true;
         }
         return $permission;
     }
+
+    /**
+     * Check current actionName
+     *
+     * @return bool
+     */
 
     public function checkAction()
     {
@@ -18,7 +30,5 @@ class Sapiha_Trial_Block_Advertising extends Mage_Core_Block_Template
             $permission = true;
         }
         return $permission;
-
     }
-
 }
