@@ -11,7 +11,7 @@ class Sapiha_Trial_Block_Advertising extends Mage_Core_Block_Template
     {
         $permission = $this->checkAction();
         $currentProduct = Mage::registry('current_product');
-        if (isset($currentProduct) && $currentProduct->getSku()=="advertising") {
+        if (isset($currentProduct) && $currentProduct->getSku() == 'advertising')     {
             $permission = true;
         }
         return $permission;
@@ -22,11 +22,11 @@ class Sapiha_Trial_Block_Advertising extends Mage_Core_Block_Template
      *
      * @return bool
      */
-
     public function checkAction()
     {
         $permission = false;
-        if($this->getRequest()->getActionName() =='advertising'){
+         $this->getLayout()->getUpdate()->getHandles();
+        if (in_array('sapiha_trial_index_advertising', $this->getLayout()->getUpdate()->getHandles())) {
             $permission = true;
         }
         return $permission;
