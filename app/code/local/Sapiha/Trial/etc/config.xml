@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <modules>
+        <Sapiha_Trial>
+            <version>0.0.1</version>
+        </Sapiha_Trial>
+    </modules>
+    <global>
+        <blocks>
+            <sapiha_trial>
+                <class>Sapiha_Trial_Block</class>
+            </sapiha_trial>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <sapiha_trial>
+                <use>standard</use>
+                <args>
+                    <module>Sapiha_Trial</module>
+                    <frontName>trial</frontName>
+                </args>
+            </sapiha_trial>
+        </routers>
+        <layout>
+            <updates>
+                <sapiha_trial>
+                    <file>sapiha_trial.xml</file>
+                </sapiha_trial>
+            </updates>
+        </layout>
+    </frontend>
+</config>
