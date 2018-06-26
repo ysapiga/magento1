@@ -25,7 +25,6 @@ class Sapiha_Trial_Block_Advertising extends Mage_Core_Block_Template
     public function checkAction()
     {
         $permission = false;
-         $this->getLayout()->getUpdate()->getHandles();
         if (in_array('sapiha_trial_index_advertising', $this->getLayout()->getUpdate()->getHandles())) {
             $permission = true;
         }
