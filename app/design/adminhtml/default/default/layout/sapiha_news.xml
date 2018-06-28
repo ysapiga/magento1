@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <sapiha_news_admin_adminhtml_news_index>
+        <reference name="content">
+            <block type="sapiha_news/adminhtml_news" />
+        </reference>
+    </sapiha_news_admin_adminhtml_news_index>
+    <sapiha_news_admin_adminhtml_news_edit>
+        <reference name="content">
+            <block type="sapiha_news/adminhtml_news_edit" />
+        </reference>
+    </sapiha_news_admin_adminhtml_news_edit>
+</layout>
