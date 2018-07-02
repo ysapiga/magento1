@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <sapiha_export_admin_adminhtml_export_index>
+        <reference name="content">
+            <block type = "sapiha_export/adminhtml_export"/>
+        </reference>
+    </sapiha_export_admin_adminhtml_export_index>
+    <sapiha_export_admin_adminhtml_export_edit>
+        <reference name="left">
+            <block type="sapiha_export/adminhtml_export_edit_tabs"/>
+        </reference>
+        <reference name="content">
+            <block type="sapiha_export/adminhtml_export_edit"/>
+        </reference>
+    </sapiha_export_admin_adminhtml_export_edit>
+    <sapiha_export_admin_adminhtml_export_categories>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="sapiha_export/adminhtml_export_edit_tabs_category" />
+        </block>
+    </sapiha_export_admin_adminhtml_export_categories>
+</layout>
