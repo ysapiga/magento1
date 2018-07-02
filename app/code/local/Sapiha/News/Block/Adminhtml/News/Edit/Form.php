@@ -22,7 +22,7 @@ class Sapiha_News_Block_Adminhtml_News_Edit_Form extends Mage_Adminhtml_Block_Wi
         $form = new Varien_Data_Form(
             array(
                 'id' => 'edit_form',
-                'action' => $this->getUrl('*/*/save',array('id'=>$this->getRequest()->getParam('id'))),
+                'action' => $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id'))),
                 'method' => 'post',
                 'enctype' => 'multipart/form-data'
             )
@@ -35,9 +35,9 @@ class Sapiha_News_Block_Adminhtml_News_Edit_Form extends Mage_Adminhtml_Block_Wi
             'name' => 'title',
         ));
         $fieldset->addField('image', 'image', array(
-            'label'     => "image",
-            'required'  => false,
-            'name'      => 'image',
+            'label' => "image",
+            'required' => false,
+            'name' => 'image',
         ));
         $fieldset->addField('content', 'editor', array(
             'label' => $helper->__('Content'),
@@ -52,6 +52,7 @@ class Sapiha_News_Block_Adminhtml_News_Edit_Form extends Mage_Adminhtml_Block_Wi
 
         $form->setUseContainer(true);
         $this->setForm($form);
+
         return parent::_prepareForm();
     }
 }

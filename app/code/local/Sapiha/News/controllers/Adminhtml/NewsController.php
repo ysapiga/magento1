@@ -2,7 +2,6 @@
 
 class Sapiha_News_Adminhtml_NewsController extends Mage_Adminhtml_Controller_Action
 {
-
     /**
      * Display grid with news
      *
@@ -10,7 +9,6 @@ class Sapiha_News_Adminhtml_NewsController extends Mage_Adminhtml_Controller_Act
      */
     public function indexAction()
     {
-
         $this->loadLayout();
         $this->_setActiveMenu('sapiha_news');
         $this->renderLayout();
@@ -34,8 +32,8 @@ class Sapiha_News_Adminhtml_NewsController extends Mage_Adminhtml_Controller_Act
     public function editAction()
     {
         $id = $this->getRequest()->getParam('id');
-
-        if (isset ($id)) {
+        //var_dump($this->getLayout()->getUpdate()->getHandles());
+        if ($id) {
             $model = Mage::getModel('sapiha_news/news')->load($id);
             Mage::register('current_news', $model);
         }
@@ -57,7 +55,6 @@ class Sapiha_News_Adminhtml_NewsController extends Mage_Adminhtml_Controller_Act
 
         if ($id = $this->getRequest()->getParam('id')) {
             $postData = $this->getRequest()->getPost();
-
             if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
                 $helper->uploadFile($id);
                 $postData['image'] = $helper->getImageUrl($id);
@@ -75,16 +72,14 @@ class Sapiha_News_Adminhtml_NewsController extends Mage_Adminhtml_Controller_Act
             $model->setData($postData);
             $model->save();
             $id = $model->getId();
-
-            if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
-                $helper->uploadFile($id);
-            }
-
+                if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
+                    $helper->uploadFile($id);
+                }
             $model->setImage($helper->getImageUrl($id))->save();
             }
 
             $this->_redirect('*/*/');
-            $this->_getSession()->addSuccess("The News was successfully saved");
+            $this->_getSession()->addSuccess($this->__("The News was successfully saved"));
     }
 
     /**
@@ -98,7 +93,7 @@ class Sapiha_News_Adminhtml_NewsController extends Mage_Adminhtml_Controller_Act
             $helper = Mage::helper('sapiha_news');
             $helper->deleteFiles($id, 'media/sapiha_news');
             Mage::getModel('sapiha_news/news')->setId($id)->delete();
-            $this->_getSession()->addSuccess("The News was successfully deleted");
+            $this->_getSession()->addSuccess($this->__("The News was successfully deleted"));
         }
         $this->_redirect('*/*/');
     }

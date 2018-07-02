@@ -19,9 +19,11 @@ class Sapiha_News_Model_News extends Mage_Core_Model_Abstract
     public function getImageUrl()
     {
         $helper = Mage::helper('sapiha_news');
+        $url = null;
         if ($this->getId() && file_exists($helper->getImagePath($this->getId()))) {
-            return $helper->getImageUrl($this->getId());
+            $url = $helper->getImageUrl($this->getId());
         }
-        return null;
+
+        return $url;
     }
 }

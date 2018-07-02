@@ -2,7 +2,6 @@
 
 class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
 {
-
     /**
      * Get image folder path for news entity
      *
@@ -11,13 +10,9 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getImagePath($id = 0)
     {
-        $path = Mage::getBaseDir('media') . '/sapiha_news';
+        $path = Mage::getBaseDir('media') . DS . 'sapiha_news';
 
-        if ($id) {
-            return "{$path}/{$id}.jpg";
-        } else {
-            return $path;
-        }
+        return $id ? "{$path}/{$id}.jpg" : $path;
     }
 
     /**
@@ -28,13 +23,9 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getImageUrl($id = 0)
     {
-        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'sapiha_news/';
+        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'sapiha_news' . DS;
 
-        if ($id) {
-            return $url . $id . '.jpg';
-        } else {
-            return $url;
-        }
+        return $id ? $url . $id . '.jpg' : $url;
     }
 
     /**
@@ -45,7 +36,7 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function cutText($text)
     {
-        return substr($text,0,672)."...";
+        return substr($text, 0, 672) . "...";
     }
 
     /**
@@ -58,14 +49,13 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function resizeImg($filePath, $width, $height)
     {
-        $fileName = substr(strrchr($filePath, "/"),1);
+        $fileName = substr(strrchr($filePath, "/"), 1);
         $folderURL = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."sapiha_news/";
         $imageURL = $folderURL . $fileName;
-        $basePath = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . DS.'sapiha_news'. DS. $fileName;
-        $newPath = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . DS .'sapiha_news'.DS.$width.'x'.$height.DS . $fileName;
+        $basePath = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . DS .'sapiha_news'. DS . $fileName;
+        $newPath = Mage::getBaseDir(Mage_Core_Model_Store::URL_TYPE_MEDIA) . DS .'sapiha_news'. DS . $width . 'x'. $height . DS . $fileName;
 
         if ($width != '') {
-
             if (file_exists($basePath) && is_file($basePath) && !file_exists($newPath)) {
                 $imageObj = new Varien_Image($basePath);
                 $imageObj->constrainOnly(TRUE);
@@ -74,8 +64,7 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
                 $imageObj->resize($width, $height);
                 $imageObj->save($newPath);
             }
-
-            $resizedURL = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA). 'sapiha_news/'.$width.'x'.$height."/". $fileName;
+            $resizedURL = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA). 'sapiha_news' . DS . $width .'x'. $height . DS . $fileName;
         } else {
             $resizedURL = $imageURL;
         }
@@ -96,7 +85,7 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
         $uploader->setAllowedExtensions(array('jpg', 'jpeg','png'));
         $uploader->setAllowRenameFiles(false);
         $uploader->setFilesDispersion(false);
-        $uploader->save($this->getImagePath(), $id .'.jpg');
+        $uploader->save($this->getImagePath(), $id . '.jpg');
     }
 
     /**
@@ -104,7 +93,6 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param int $id
      * @param string $folderName
-     * @param $folderName
      * @return void
      */
     public function deleteFiles($id, $folderName)
@@ -112,11 +100,11 @@ class Sapiha_News_Helper_Data extends Mage_Core_Helper_Abstract
         $fileName = "$id.jpg";
         $files = scandir($folderName);
         if(in_array($fileName, $files)) {
-            @unlink($folderName.'/'.$fileName);
+            @unlink($folderName . DS . $fileName);
         }
         foreach ($files as $file) {
-            if (is_dir($folderName.'/'  .$file) && $file !='.' && $file != '..'){
-                $this->deleteFiles($id,$folderName.'/'.$file);
+            if (is_dir($folderName . DS . $file) && $file !='.' && $file != '..'){
+                $this->deleteFiles($id, $folderName . DS . $file);
             }
         }
     }

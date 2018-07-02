@@ -1,42 +1,33 @@
 <?php
-$_newsCollection=$this->getCollection();
-$helper = Mage::helper('sapiha_news');
+    $_newsCollection=$this->getCollection();
+    $helper = Mage::helper('sapiha_news');
 ?>
+
 <?php echo $this->getPagerHtml() ?>
-    <div class="category-products">
         <?php if(!$_newsCollection->count()): ?>
             <h3 class="note-msg"><?php echo $this->__('There are no News matching the selection.') ?></h3>
         <?php else: ?>
-        <ol class="products-list" id="products-list">
+        <ol>
             <?php foreach ($_newsCollection as $_news): ?>
                 <?php $url =  $this->getUrl('*/*/newsView', array(
                     'id'=>$_news->getId()));?>
-                <li class="item last">
+                <li class="news">
                     <?php // Product Image ?>
-                    <a href="<?php echo $url; ?>" class="product-image">
-                        <img src="<?php echo $helper->resizeImg( $helper->getImagePath($_news->getId()), 120, 120)?>"/>
+                    <a href="<?php echo $url; ?>">
+                        <img class="image_float" src="<?php echo $helper->resizeImg( $helper->getImagePath($_news->getId()), 120, 120)?>"/>
                     </a>
-                    <div class="product-shop">
-                        <div class="f-fix">
-                            <div class="product-primary">
-                                <h2 class="product-name"><a href="<?php echo $url; ?>"><?php echo $_news->getTitle(); ?></a></h2>
+                            <div>
+                                <h2><a href="<?php echo $url; ?>"><?php echo $_news->getTitle(); ?></a></h2>
                             </div>
-                            <div class="desc std" style="width: 100%">
+                            <div>
                                 <?php echo $helper->cutText($_news->getContent()); ?>
-
                             </div>
-                            <div class="desc std">
+                            <div>
                                 <br>
-                                <br>
-                                <a href="<?php echo $url; ?>"  class="link-learn"><?php echo $this->__('Learn More') ?></a>
+                                <a href="<?php echo $url; ?>"><?php echo $this->__('Learn More') ?></a>
                             </div>
-
-                        </div>
-                    </div>
                 </li>
             <?php endforeach; ?>
         </ol>
         <?php echo $this->getPagerHtml() ?>
-    </div>
-    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
 <?php endif; ?>

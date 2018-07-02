@@ -20,9 +20,10 @@ class Sapiha_News_Block_News extends Mage_Core_Block_Template
         parent::_prepareLayout();
         $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
         $limit = Mage::getStoreConfig('sapiha_news_options/list_options/count');
-        $pager->setAvailableLimit(array($limit=>$limit));
+        $pager->setAvailableLimit(array($limit => $limit));
         $pager->setCollection($this->getCollection());
         $this->setChild('pager', $pager);
+
         return $this;
     }
 
@@ -46,7 +47,11 @@ class Sapiha_News_Block_News extends Mage_Core_Block_Template
         $model = Mage::getModel('sapiha_news/news');
         $id = $this->getRequest()->getParam('id');
         $model->load($id);
+
+        if ($model->getId() == null) {
+            $model = null;
+        }
+
         return $model;
     }
-
 }

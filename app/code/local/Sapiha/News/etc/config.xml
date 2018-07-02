@@ -7,35 +7,35 @@
     </modules>
     <admin>
         <routers>
-            <sapiha_news_admin>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Sapiha_News</module>
-                    <frontName>sapiha_news_admin</frontName>
+                    <modules>
+                        <sapiha_news before="Mage_Adminhtml">Sapiha_News_Adminhtml</sapiha_news>
+                    </modules>
                 </args>
-            </sapiha_news_admin>
+            </adminhtml>
         </routers>
     </admin>
     <adminhtml>
         <acl>
-        <resources>
-            <admin>
-                <children>
-                    <system>
-                        <children>
-                            <config>
-                                <children>
-                                    <sapiha_news_options>
-                                        <title>News</title>
-                                    </sapiha_news_options>
-                                </children>
-                            </config>
-                        </children>
-                    </system>
-                </children>
-            </admin>
-        </resources>
-    </acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <sapiha_news_options>
+                                            <title>News</title>
+                                        </sapiha_news_options>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
         <layout>
             <updates>
                 <sapiha_news>
@@ -47,7 +47,7 @@
             <sapiha_news module="sapiha_news">
                 <title>News</title>
                 <sort_order>78</sort_order>
-                <action>sapiha_news_admin/adminhtml_news</action>
+                <action>adminhtml/news/index</action>
             </sapiha_news>
         </menu>
     </adminhtml>

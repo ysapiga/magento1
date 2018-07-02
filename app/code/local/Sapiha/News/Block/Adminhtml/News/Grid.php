@@ -9,6 +9,7 @@ class Sapiha_News_Block_Adminhtml_News_Grid extends Mage_Adminhtml_Block_Widget_
     {
         $collection = Mage::getModel('sapiha_news/news')->getCollection();
         $this->setCollection($collection);
+
         return parent::_prepareCollection();
     }
 
@@ -28,17 +29,18 @@ class Sapiha_News_Block_Adminhtml_News_Grid extends Mage_Adminhtml_Block_Widget_
             'index' => 'title',
             'type' => 'text',
         ));
+
         return parent::_prepareColumns();
     }
 
     /**
-     * @param $model
+     * @param Sapiha_News_Model_News $model
      * @return string
      */
     public function getRowUrl($model)
     {
         return $this->getUrl('*/*/edit', array(
-            'id'=>$model->getId(),
+            'id' => $model->getId(),
         ));
     }
 }
