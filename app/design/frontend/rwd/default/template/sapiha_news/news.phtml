@@ -1,0 +1,33 @@
+<?php
+    $_newsCollection=$this->getCollection();
+    $helper = Mage::helper('sapiha_news');
+?>
+
+<?php echo $this->getPagerHtml() ?>
+        <?php if(!$_newsCollection->count()): ?>
+            <h3 class="note-msg"><?php echo $this->__('There are no News matching the selection.') ?></h3>
+        <?php else: ?>
+        <ol>
+            <?php foreach ($_newsCollection as $_news): ?>
+                <?php $url =  $this->getUrl('*/*/newsView', array(
+                    'id'=>$_news->getId()));?>
+                <li class="news">
+                    <?php // Product Image ?>
+                    <a href="<?php echo $url; ?>">
+                        <img class="image_float" src="<?php echo $helper->resizeImg( $helper->getImagePath($_news->getId()), 120, 120)?>"/>
+                    </a>
+                            <div>
+                                <h2><a href="<?php echo $url; ?>"><?php echo $_news->getTitle(); ?></a></h2>
+                            </div>
+                            <div>
+                                <?php echo $helper->cutText($_news->getContent()); ?>
+                            </div>
+                            <div>
+                                <br>
+                                <a href="<?php echo $url; ?>"><?php echo $this->__('Learn More') ?></a>
+                            </div>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+        <?php echo $this->getPagerHtml() ?>
+<?php endif; ?>
