@@ -33,6 +33,7 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs extends Mage_Adminhtml_Bloc
             'url'       => $this->getUrl('*/*/categories', array('_current' => true)),
             'class'     => 'ajax',
         ));
+
         return parent::_prepareLayout();
     }
 }

@@ -2,7 +2,6 @@
 
 class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Filter extends Mage_Adminhtml_Block_Widget_Form
 {
-
     /**
      * Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Filter constructor.
      */
@@ -23,11 +22,10 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Filter extends Mage_Adminht
         $formValues = $model->getData();
 
         $form = new Varien_Data_Form();
+
         $fieldset = $form->addFieldset('main_form', array(
             'legend' => $helper->__('Chose filters')
         ));
-
-
         $fieldset->addField('minimum_qty', 'text', array(
             'label' => $helper->__('Minimum qty'),
             'required' => true,
@@ -64,12 +62,9 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Filter extends Mage_Adminht
             ))
         ));
         $form->setUseContainer(false);
-
-        if ($this->getRequest()->getParam('id')) {
-            $form->setValues($formValues);
-        }
-
+        $form->setValues($formValues);
         $this->setForm($form);
+
         return parent::_prepareForm();
     }
 }

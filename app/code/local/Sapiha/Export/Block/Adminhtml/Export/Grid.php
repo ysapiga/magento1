@@ -9,18 +9,22 @@ class Sapiha_Export_Block_Adminhtml_Export_Grid extends Mage_Adminhtml_Block_Wid
     {
         $collection = Mage::getModel('sapiha_export/export')->getCollection();
         $this->setCollection($collection);
+
         return parent::_prepareCollection();
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('id');
         $this->getMassactionBlock()->setFormFieldName('export');
-
         $this->getMassactionBlock()->addItem('delete', array(
             'label' => $this->__('Export'),
             'url' => $this->getUrl('*/*/massExport'),
         ));
+
         return $this;
     }
 
@@ -56,11 +60,14 @@ class Sapiha_Export_Block_Adminhtml_Export_Grid extends Mage_Adminhtml_Block_Wid
                 0 => Mage::helper('sapiha_export')->__('Inactive')
             )
         ));
+
         return parent::_prepareColumns();
     }
 
     /**
-     * @param $model
+     * Get grid row url
+     *
+     * @param Sapiha_Export_Model_Export $model
      * @return string
      */
     public function getRowUrl($model)

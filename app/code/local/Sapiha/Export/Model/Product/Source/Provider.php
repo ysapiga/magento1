@@ -2,7 +2,6 @@
 
 class Sapiha_Export_Model_Product_Source_Provider extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
-
     /**
      * Retrieve All options
      *

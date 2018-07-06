@@ -13,6 +13,8 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Form extends Mage_Adminhtml_Bloc
     }
 
     /**
+     * Prepare export form
+     *
      * @return Mage_Adminhtml_Block_Widget_Form
      */
     protected function _prepareForm()

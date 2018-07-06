@@ -55,12 +55,9 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Main extends Mage_Adminhtml
         ));
 
         $form->setUseContainer(false);
-
-        if($this->getRequest()->getParam('id')) {
-            $form->setValues($formValues);
-        }
-
+        $form->setValues($formValues);
         $this->setForm($form);
+
         return parent::_prepareForm();
     }
 }

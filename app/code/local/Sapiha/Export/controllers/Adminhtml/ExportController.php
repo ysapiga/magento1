@@ -56,6 +56,8 @@ class Sapiha_Export_Adminhtml_ExportController extends Mage_Adminhtml_Controller
     }
 
     /**
+     * Redirect on edit cation
+     *
      * @return void
      */
     public function newAction()
@@ -132,7 +134,7 @@ class Sapiha_Export_Adminhtml_ExportController extends Mage_Adminhtml_Controller
     }
 
     /**
-     * @return mixed
+     * @inheritdoc
      */
     protected function _isAllowed()
     {

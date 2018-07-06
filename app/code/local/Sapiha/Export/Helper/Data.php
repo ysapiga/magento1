@@ -5,8 +5,8 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Export file generation
      *
+     * @param int $id
      * @return void
-     * @param $id int
      */
     public function export($id)
     {
@@ -33,8 +33,8 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Filtering product collection on addition to export requirements
      *
-     * @param $id int
-     * @return mixed
+     * @param int $id
+     * @return Sapiha_Export_Model_Resource_Export_Collection
      */
     public function prepareCollection($id)
     {
@@ -55,28 +55,30 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
                 '{{table}}.stock_id=1',
                 'left')
             ->addAttributeToFilter('qty', array('gteq' => $export->getMinimumQty()));
+
         return $collection;
     }
 
     /**
      * File name generation before export
      *
-     * @param $export Sapiha_Export_Model_Export
+     * @param Sapiha_Export_Model_Export $export
      * @return string
      */
-    public function setFileName($export)
+    public function setFileName(Sapiha_Export_Model_Export $export)
     {
         $fileManager = new Varien_Io_File();
-        $dirName = Mage::getBaseDir('media') . '/sapiha_export/';
+        $dirName = Mage::getBaseDir('media') . DS . 'sapiha_export' . DS;
 
         if (!is_dir($dirName)) {
             $fileManager->mkdir($dirName);
         }
-        return $dirName.$export->getFileName().$export->getFormat();
+
+        return $dirName.$export->getFileName() . $export->getFormat();
     }
 
     /**
-     * filtering and convert data to yaml format
+     * Filtering and convert data to yaml format
      *
      * @param $collection
      * @return string
@@ -87,9 +89,9 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
         $padding = "    ";
         $date = Mage::getModel('core/date')->date('Y-m-d H:i:s');
         $content = "<?xml version=\"1.0\" encoding=\"windows-1251\"?>\n";
-        $content.="<!DOCTYPE yml_catalog SYSTEM \"shops . dtd\">\n";
-        $content.="<yml_catalog date=\"$date\">\n";
-        $content.= $padding."<offers>\n";
+        $content .= "<!DOCTYPE yml_catalog SYSTEM \"shops . dtd\">\n";
+        $content .= "<yml_catalog date=\"$date\">\n";
+        $content .= $padding . "<offers>\n";
         $offerId = 1;
 
         foreach ($collection as $product) {
@@ -104,39 +106,40 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
                 $categoryIds = $product->getCategoryIds();
             }
 
-            $content.= str_repeat($padding,2)."<offer id=\"$offerId\" type=\"$type\" available=\"$availible\">\n";
-            $content.= str_repeat($padding,3)."<url>$url</url>\n";
-            $content.= str_repeat($padding,3)."<price>$price</price>\n";
-            $content.= str_repeat($padding,3)."<currencyId>$currency</currencyId>\n";
+            $content .= str_repeat($padding,2) . "<offer id=\"$offerId\" type=\"$type\" available=\"$availible\">\n";
+            $content .= str_repeat($padding,3) . "<url>$url</url>\n";
+            $content .= str_repeat($padding,3) . "<price>$price</price>\n";
+            $content .= str_repeat($padding,3) . "<currencyId>$currency</currencyId>\n";
 
             if (is_array($categoryIds)) {
-                $content .= str_repeat($padding, 3) ."<categoryIds>\n";
+                $content .= str_repeat($padding, 3) . "<categoryIds>\n";
 
                 foreach ($categoryIds as $value) {
-                    $content.= str_repeat($padding,4)."<categoryId>$value</categoryId>\n";
+                    $content .= str_repeat($padding,4) . "<categoryId>$value</categoryId>\n";
               }
-                $content .= str_repeat($padding, 3)."</categoryIds>\n";
+                $content .= str_repeat($padding, 3) . "</categoryIds>\n";
             }
 
-            $content.= str_repeat($padding,3)."<picture></picture>\n";
-            $content.= str_repeat($padding,3)."<qty>$qty</qty>\n";
-            $content.= str_repeat($padding,2)."</offer>\n";
+            $content .= str_repeat($padding,3) . "<picture></picture>\n";
+            $content .= str_repeat($padding,3) . "<qty>$qty</qty>\n";
+            $content .= str_repeat($padding,2) . "</offer>\n";
             $offerId++;
         }
 
         $content .= $padding."<offers>\n";
-        $content.='</yml_catalog>';
+        $content .= '</yml_catalog>';
+
         return $content;
     }
 
     /**
      * Filtering and convert data to json format
      *
-     * @param $collection
+     * @param Sapiha_Export_Model_Resource_Export_Collection $collection
      * @return string
      * @throws Mage_Core_Model_Store_Exception
      */
-    public function toJSON($collection)
+    public function toJSON(Sapiha_Export_Model_Resource_Export_Collection $collection)
     {
         $content = "";
 
@@ -160,14 +163,18 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $exports array
+     * Mass export for export entities
+     *
+     * @param array $exports
      * @throws Mage_Core_Model_Store_Exception
      * @throws Varien_Exception
+     * @return void
      */
     public function massExport($exports)
     {
         $succesIterator = 0;
         $iterator = 0;
+
         foreach ($exports as $id) {
             $exportId = $id;
             $export = Mage::getModel('sapiha_export/export')->load($exportId);
@@ -176,15 +183,18 @@ class Sapiha_Export_Helper_Data extends Mage_Core_Helper_Abstract
             if ($collection->getSize()) {
                 $collection->getSelect()
                     ->group('e.entity_id');
+
                 if ($export->getFormat() == '.yaml') {
                     file_put_contents($this->setFileName($export), $this->toYaml($collection));
                     $succesIterator++;
                 }
+
                 if ($export->getFormat() == '.json') {
                     file_put_contents($this->setFileName($export), $this->toJSON($collection));
                     $succesIterator++;
                 }
             }
+
             $iterator++;
         }
         Mage::app()->getResponse()->setRedirect('*/*/index');

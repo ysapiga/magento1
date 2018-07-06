@@ -2,12 +2,18 @@
 
 class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Category extends Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Categories
 {
-
+    /**
+     * @var array
+     */
     protected $_categoryIds;
+
+    /**
+     * @var array
+     */
     protected $_selectedNodes = null;
 
     /**
-     * Specify template to use
+     * @inheritdoc
      */
     public function __construct()
     {
@@ -36,13 +42,13 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Category extends Mage_Admin
     }
 
     /**
-     * Return array with category IDs which the product is assigned to
+     * Returns category ids as string
      *
      * @return array
      */
     protected function getCategoryIds()
     {
-        return explode(',',$this->getProduct()->getCategoryIds());
+        return explode(',', $this->getProduct()->getCategoryIds());
     }
 
     /**
@@ -52,6 +58,6 @@ class Sapiha_Export_Block_Adminhtml_Export_Edit_Tabs_Category extends Mage_Admin
      */
     public function getIdsString()
     {
-        return implode(',',$this->getCategoryIds());
+        return implode(',', $this->getCategoryIds());
     }
 }
