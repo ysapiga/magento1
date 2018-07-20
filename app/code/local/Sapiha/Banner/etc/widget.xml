@@ -1,0 +1,31 @@
+<widgets>
+    <banner type="sapiha_banner/catalog_banner" translate="name description" module="sapiha_banner">
+        <name>Banner</name>
+        <description>Banner in products block</description>
+        <is_email_compatible>1</is_email_compatible>
+        <parameters>
+            <form translate="label">
+                <helper_block>
+                    <type>sapiha_banner/adminhtml_banner_edit_options</type>
+                </helper_block>
+                <sort_order>10</sort_order>
+            </form>
+            <name>
+                <visible>1</visible>
+                <label>Name</label>
+                <type>text</type>
+            </name>
+            <!--<link translate="label">-->
+                <!--<visible>1</visible>-->
+                <!--<label>Banner Link</label>-->
+                <!--<type>text</type>-->
+                <!--<validate>validate-url</validate>-->
+            <!--</link>-->
+            <image translate="label">
+                <visible>1</visible>
+                <label>Main Image</label>
+                <type>image</type>
+            </image>
+        </parameters>
+    </banner>
+</widgets>

@@ -1,0 +1,85 @@
+<span id="mySpan" class="mySpan">
+    <img class="bannerImg" id="bannerImg" src="<?php echo $this->getData('image')?>" width="100%" height="100%" />
+</span>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close1">&times;</span>
+            <div class="modalBody">
+                <p>При нажатии на кнопку "Перейти" ми отправи Ajax запрос на сервер чтоб обновить количество кликов на банер. И откроем новое окно</p>
+                <br>
+                <a href="<?php echo $this->getData('link') ?>" target="_blank" id="ajaxRequest" data-id = "<?php echo $this->getData('instance_id') ?>" class="button ajaxRequest">Перейти</a>
+            </div>
+        </div>
+</div>
+<script>
+    jQuery(document).ready(function () {
+        var button  = jQuery('.ajaxRequest');
+        if(jQuery(".item.first")[0]) {
+            var height = jQuery(".item.first").height();
+            var widtht = jQuery(".item.first").width();
+        } else {
+            var height = jQuery(".item.even").height();
+            var widtht = jQuery(".item.even").width();
+        }
+        jQuery('.bannerImg').height(height);
+        jQuery('.bannerImg').width(widtht);
+        jQuery(".mySpan").on('click', function(){
+            this.next().style.display = 'block';
+        });
+        jQuery(".close1").on('click', function(){
+            this.parentElement.parentElement.style.display = 'none';
+        });
+        button.on('click',function(){
+            jQuery.post(
+                "banner/index/updateClick",
+                {
+                    id:jQuery(event.target).attr('data-id'),
+                },
+            );
+            this.parentElement.parentElement.parentElement.style.display = 'none';
+        });
+        jQuery(".mySpan").on('click', function(){
+            this.next().style.display = 'block';
+        });
+        jQuery(".close1").on('click', function(){
+            this.parentElement.parentElement.style.display = 'none';
+        });
+    })
+</script>
+<style>
+    .bannerImg{
+        border: 1px black solid;
+    }
+    .modal {
+        z-index: 999;
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        /*z-index: 1;*/ /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close1 {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close1:hover {
+        cursor: pointer;
+    }
+</style>

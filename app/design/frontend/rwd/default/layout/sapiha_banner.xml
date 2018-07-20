@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout>
+    <catalog_category_view>
+        <reference name="content">
+            <remove name="product_list" />
+            <block type="sapiha_banner/catalog_banner" name="catalog.banner" before="category.products" template = 'sapiha_banner/list.phtml'/>
+        </reference>
+    </catalog_category_view>
+</layout>
