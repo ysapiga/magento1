@@ -25,12 +25,13 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
         ));
         $fieldset->addField('link', 'text', array(
             'name' => 'parameters[link]',
+            'label' => $helper->__('Link'),
             'value' => !empty($parameters['link']) ? $parameters['link'] : '',
-            'required' => false,
+            'required' => true,
             'class' => 'validate-url',
         ));
         $fieldset->addField('instance_id', 'hidden', array(
-            'name' => 'parameters[instance_id]',
+                'name' => 'parameters[instance_id]',
             'value' => !empty($parameters['instance_id']) ? $parameters['instance_id'] : '',
             'required' => false,
         ));

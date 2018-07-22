@@ -12,25 +12,28 @@ class Sapiha_Banner_Adminhtml_BannerController extends Mage_Adminhtml_Controller
     {
         $response = array();
         $helper = Mage::helper('sapiha_banner');
+        $image = Mage::getModel('sapiha_banner/image');
+
 
         if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
             $uploader = new Varien_File_Uploader('image');
             $uploader->setFilesDispersion(false);
-            $uploader->setAllowedExtensions($helper->getAllowedImageExtensions());
+            $uploader->setAllowedExtensions($image->getAllowedImageExtensions());
             $uploader->setAllowRenameFiles(true);
-            $fileExtension = $uploader->getFileExtension();
+            $image->setName('file.' . $uploader->getFileExtension());
 
             try {
-                $uploader->save($helper->getImagePath('tmp'), "file.$fileExtension");
-                $uploadedFile = $helper->getImageUrl('tmp', "file.$fileExtension");
+                $uploader->save($image->getImagePath('tmp'), $image->getName());
+                $uploadedFile = $image->getImageUrl('tmp', $image->getName());
                 $response['result'] = true;
                 $response['image'] = $uploadedFile;
+                $imagePath = $image->getImagePath('tmp', $image->getName());
 
-                if($helper->validateImageSize($helper->getImagePath('tmp',"file.$fileExtension") == false)) {
-                    unlink($helper->getImagePath('tmp',"file.$fileExtension"));
+                if($image->validateImageSize($imagePath) == false)   {
+                    unlink($image->getImagePath('tmp',$image->getName()));
                     $this->_getSession()->addError('Small image');
                     $response['result'] = false;
-                    $response['image'] = "";
+                    $respone['image'] = "";
                     $response['error'] = $helper->__('Small Image');
                 }
 

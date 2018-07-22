@@ -79,17 +79,19 @@
                     </delete_images>
                 </observers>
             </widget_widget_instance_delete_before>
+            <widget_widget_instance_save_before>
+                <observers>
+                    <save_banner>
+                        <type>singleton</type>
+                        <class>sapiha_banner/observer</class>
+                        <method>saveBanner</method>
+                    </save_banner>
+                </observers>
+            </widget_widget_instance_save_before>
         </events>
     </global>
     <admin>
         <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <sapiha_banner before="Mage_Widget">Sapiha_Banner_Adminhtml</sapiha_banner>
-                    </modules>
-                </args>
-            </adminhtml>
             <sapiha_banner_admin>
                 <use>admin</use>
                 <args>

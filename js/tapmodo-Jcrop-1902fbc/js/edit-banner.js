@@ -7,6 +7,7 @@ jQuery(document).ready(function () {
     var crooperGridImg = jQuery("#gridcroopedImage");
     var listRatio = convertRatio(jQuery("#listratio").val());
     var gridRatio = convertRatio(jQuery("#gridratio").val());
+    uploadGridBtn.attr('disabled', 'disabled');
     function setGridCoords(c)
     {
         jQuery('#gridx').val(c.x);
@@ -25,6 +26,10 @@ jQuery(document).ready(function () {
         var arr = ratio.split('/');
         return arr[0]/arr[1];
     }
+    uploadGridFileFieldSelector.change(function () {
+        uploadGridBtn.prop("disabled", false);
+    });
+
     uploadGridBtn.on('click', function (e) {
         e.preventDefault();
         var form_data = new FormData();
@@ -41,6 +46,10 @@ jQuery(document).ready(function () {
             type: 'POST',
              success: function (serverResponse) {
                  loader.hide();
+                 if (serverResponse.error)
+                 {
+                     alert(serverResponse.error);
+                 }
                  crooperGridImg.attr('src', serverResponse.image);
                  crooperListImg.attr('src', serverResponse.image);
                 jQuery(function () {

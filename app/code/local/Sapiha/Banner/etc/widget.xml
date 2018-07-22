@@ -15,12 +15,6 @@
                 <label>Name</label>
                 <type>text</type>
             </name>
-            <!--<link translate="label">-->
-                <!--<visible>1</visible>-->
-                <!--<label>Banner Link</label>-->
-                <!--<type>text</type>-->
-                <!--<validate>validate-url</validate>-->
-            <!--</link>-->
             <image translate="label">
                 <visible>1</visible>
                 <label>Main Image</label>

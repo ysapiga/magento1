@@ -122,6 +122,10 @@
                 <label>Main Content Area</label>
             </block>
 
+            <block type="sapiha_banner/catalog_banner" name="catalog.banner" as="catalog.banner">
+                <label>Product list</label>
+            </block>
+
             <block type="core/text_list" name="right" as="right" translate="label">
                 <label>Right Column</label>
             </block>

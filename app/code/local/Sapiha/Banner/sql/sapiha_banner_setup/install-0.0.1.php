@@ -15,9 +15,8 @@ $table = $installer->getConnection()
     ->addColumn('banner_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array(
         'nullable'  => false,
     ), 'Banner id')
-
     ->addColumn('click_count', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array(
-        'nullable'  => false,
+        'nullable'  => true,
     ), 'amount of clicks');
 $table  ->addForeignKey($installer->getFkName('sapiha_banner/table_banner', 'banner_id', 'widget/widget_instance', 'instance_id'),
     'banner_id', $installer->getTable('widget/widget_instance'), 'instance_id',
