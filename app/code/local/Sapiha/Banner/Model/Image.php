@@ -36,12 +36,12 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      */
     public function getImagePath($type, $name = '')
     {
+        $path = Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . $type;
         if ($name !== '' ) {
-            return Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . $type . DS . $name;
-        } else {
-            return Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . $type;
+            $path = Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . $type . DS . $name;
+        } 
 
-        }
+        return $path;
     }
 
     /**
@@ -53,11 +53,12 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      */
     public function getImageUrl($type, $name = '')
     {
+        $path = Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type;
         if ($name !== '') {
-            return Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type . DS . $name;
-        } else {
-            return Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type;
+            $path = Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type . DS . $name;
         }
+        
+        return $path;
     }
 
     /**
@@ -204,10 +205,6 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
                 $e->getMessage();
             }
         }
-    }
-    public function deleteImage()
-    {
-
     }
 
     /**
