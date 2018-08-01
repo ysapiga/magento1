@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<layout>
+    <sales_order_view>
+        <reference name="order_totals">
+            <block type="sapiha_kasa/totals"/>
+        </reference>
+    </sales_order_view>
+</layout>

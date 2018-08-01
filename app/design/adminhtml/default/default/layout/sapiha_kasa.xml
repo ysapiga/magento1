@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <adminhtml_kasa_index>
+        <reference name="content">
+            <block type="sapiha_kasa/adminhtml_kasa" />
+        </reference>
+    </adminhtml_kasa_index>
+    <adminhtml_sales_order_view>
+        <reference name="order_totals">
+            <block type="sapiha_kasa/adminhtml_sales_order_totals" />
+        </reference>
+    </adminhtml_sales_order_view>
+    <adminhtml_sales_order_invoice_new>
+        <reference name="invoice_totals">
+            <block type="sapiha_kasa/adminhtml_sales_order_totals" />
+        </reference>
+    </adminhtml_sales_order_invoice_new>
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="creditmemo_totals">
+            <block type="sapiha_kasa/adminhtml_sales_order_totals" />
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+</layout>
