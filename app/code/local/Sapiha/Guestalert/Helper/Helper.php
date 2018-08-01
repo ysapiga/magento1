@@ -9,10 +9,8 @@ class Sapiha_Guestalert_Helper_Helper extends Mage_ProductAlert_Helper_Data
      */
     public function isStockAlertAllowed()
     {
-        $permission = false;
-        if ($this->IsCustomerLogged()) {
-        $permission = Mage::getStoreConfigFlag(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
-        }
+        $stockAlertPermission = Mage::getStoreConfigFlag(Mage_ProductAlert_Model_Observer::XML_PATH_STOCK_ALLOW);
+        $permission = ($this->IsCustomerLogged()) ? $stockAlertPermission : false;
 
         return $permission;
     }
@@ -24,14 +22,18 @@ class Sapiha_Guestalert_Helper_Helper extends Mage_ProductAlert_Helper_Data
      */
     public function isPriceAlertAllowed()
     {
-        $permission = false;
-        if ($this->IsCustomerLogged()) {
-            $permission = Mage::getStoreConfigFlag(Mage_ProductAlert_Model_Observer::XML_PATH_PRICE_ALLOW);
-        }
+
+        $priceAlertPermission =  Mage::getStoreConfigFlag(Mage_ProductAlert_Model_Observer::XML_PATH_PRICE_ALLOW);
+        $permission = ($this->IsCustomerLogged()) ? $priceAlertPermission  : false;
 
         return $permission;
     }
 
+    /**
+     * Check is customer logged in
+     *
+     * @return bool
+     */
     public function IsCustomerLogged()
     {
         return Mage::helper('customer')->isLoggedIn();

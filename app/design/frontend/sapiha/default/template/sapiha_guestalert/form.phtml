@@ -1,4 +1,6 @@
-<?php if ($this->canShow()) : ?>
+<?php
+/* @var $this Sapiha_Guestalert_Block_Form */
+if ($this->canShow()) :?>
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close1">&times;</span>
@@ -68,29 +70,26 @@
     </div>
 </div>
 <?php endif; ?>
-
 <script>
-    var modal = document.getElementById('myModal'),
-        btn = document.getElementById("myBtn"),
-        span = document.getElementsByClassName("close1")[0],
-        modal2 = document.getElementById('myModal2'),
-        btn2 = document.getElementById("myBtn2"),
-        span2 = document.getElementsByClassName("close1")[1];
-
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-        modal2.style.display = "none";
-    }
-
-    btn2.onclick = function() {
-        modal2.style.display = "block";
-    }
-    span2.onclick = function() {
-        modal2.style.display = "none";
-    }
+    jQuery(document).ready(function (){
+        var modal = jQuery('#myModal'),
+            btn = jQuery('#myBtn'),
+            span = jQuery('.close1')[0],
+            modal2 = jQuery('#myModal2'),
+            btn2 = jQuery('#myBtn2'),
+            span2 = jQuery('.close1')[1];
+        btn.on('click', function () {
+            modal.show();
+        });
+        span.on('click', function () {
+            modal.hide();
+            modal2.hide();
+        });
+        btn2.on('click', function () {
+            modal2.show();
+        });
+        span2.on('click', function () {
+            modal2.hide();
+        });
+    })
 </script>
-
