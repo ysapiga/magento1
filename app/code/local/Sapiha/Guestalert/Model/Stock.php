@@ -1,4 +1,5 @@
 <?php
+
 class Sapiha_Guestalert_Model_Stock extends Mage_Core_Model_Abstract
 {
     /**

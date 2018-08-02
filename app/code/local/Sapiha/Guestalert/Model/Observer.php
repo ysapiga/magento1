@@ -10,7 +10,7 @@ class Sapiha_Guestalert_Model_Observer extends Mage_Core_Helper_Abstract
     /**
      * Stock Alert template configuration
      */
-    const XML_PATH_TO_STOCK_ALERT_TEMPLATE = 'sapiha_guestalert/sapiha_guestalert_group/email_price_template';
+    const XML_PATH_TO_STOCK_ALERT_TEMPLATE = 'sapiha_guestalert/sapiha_guestalert_group/email_stock_template';
 
     /**
      * Warning (exception) errors array

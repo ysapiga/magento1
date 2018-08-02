@@ -12,6 +12,10 @@ class Sapiha_Guestalert_Model_Manager extends Mage_Core_Model_Abstract
      */
     private $priceAlertModel;
 
+    const TYPE_STOCK = 'stock';
+
+    const TYPE_PRICE = 'price';
+
     /**
      * Sapiha_Guestalert_Model_Manager constructor
      */
@@ -32,20 +36,11 @@ class Sapiha_Guestalert_Model_Manager extends Mage_Core_Model_Abstract
      */
     public function saveStockModel($post, $productId)
     {
-        if ($this->checkCandidate($post['guest_email'], $productId, 'stock')) {
-
-            try {
-                $this->stockAlertModel->setData($post);
-                $this->stockAlertModel->setProductId($productId);
-                $this->stockAlertModel->setPrice($this->_getProduct($productId)->getFinalPrice());
-                $this->stockAlertModel->save();
-                Mage::getSingleton('core/session')->addSuccess('You was successfully subscribed');
-            } catch (Exception $e) {
-                Mage::getSingleton('core/session')->addError('Something went wrong');
-            }
-
-        } else {
-            Mage::getSingleton('core/session')->addError('You already subscribed');
+        if ($this->checkCandidate($post['guest_email'], $productId, self::TYPE_STOCK)) {
+            $this->stockAlertModel->setData($post);
+            $this->stockAlertModel->setProductId($productId);
+            $this->stockAlertModel->setPrice($this->_getProduct($productId)->getFinalPrice());
+            $this->stockAlertModel->save();
         }
     }
 
@@ -59,20 +54,11 @@ class Sapiha_Guestalert_Model_Manager extends Mage_Core_Model_Abstract
      */
     public function savePriceModel($post, $productId)
     {
-        if ($this->checkCandidate($post['guest_email'], $productId, 'price')) {
-
-            try{
-                $this->priceAlertModel->setData($post);
-                $this->priceAlertModel->setProductId($productId);
-                $this->priceAlertModel->setPrice($this->_getProduct($productId)->getFinalPrice());
-                $this->priceAlertModel->save();
-                Mage::getSingleton('core/session')->addSuccess('You was successfully subscribed');
-            } catch (Exception $e) {
-                Mage::getSingleton('core/session')->addError('Something went wrong');
-            }
-
-        } else {
-            Mage::getSingleton('core/session')->addError('You already subscribed');
+        if ($this->checkCandidate($post['guest_email'], $productId, self::TYPE_PRICE)) {
+            $this->priceAlertModel->setData($post);
+            $this->priceAlertModel->setProductId($productId);
+            $this->priceAlertModel->setPrice($this->_getProduct($productId)->getFinalPrice());
+            $this->priceAlertModel->save();
         }
     }
 
@@ -95,14 +81,16 @@ class Sapiha_Guestalert_Model_Manager extends Mage_Core_Model_Abstract
      */
     public function factory($type)
     {
-        $model = null;
         switch ($type) {
-            case 'price' :
+            case self::TYPE_PRICE :
                 $model = Mage::getModel('sapiha_guestalert/price');
                 break;
-            case 'stock' :
+            case self::TYPE_STOCK :
                 $model = Mage::getModel('sapiha_guestalert/stock');
                 break;
+            default :
+                $model = null;
+                throw new Exception("Unsuported alert type $type");
         }
 
         return $model;

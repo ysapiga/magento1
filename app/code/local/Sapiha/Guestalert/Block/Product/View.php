@@ -13,8 +13,6 @@ class Sapiha_Guestalert_Block_Product_View extends Mage_ProductAlert_Block_Produ
             || !$this->_product || false === $this->_product->getCanShowPrice()
         ) {
             $this->setTemplate('sapiha_guestalert/price.phtml');
-
-            return;
         } else {
             $this->setSignupUrl($this->_getHelper()->getSaveUrl('price'));
         }
@@ -28,8 +26,6 @@ class Sapiha_Guestalert_Block_Product_View extends Mage_ProductAlert_Block_Produ
      */
     public function canShowStockForm()
     {
-        $permission = ($this->_product->getIsInStock() == '0') ? true : false;
-
-        return $permission;
+        return $this->_product->getIsInStock() == '0';
     }
 }
