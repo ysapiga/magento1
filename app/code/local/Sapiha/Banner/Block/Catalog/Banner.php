@@ -56,7 +56,6 @@ class Sapiha_Banner_Block_Catalog_Banner extends Mage_Catalog_Block_Product_List
      * @param string $type
      * @return mixed
      */
-
     public function getChild($name = '', $type = '')
     {
         if ($type == 'list') {
@@ -65,5 +64,21 @@ class Sapiha_Banner_Block_Catalog_Banner extends Mage_Catalog_Block_Product_List
         }
 
         return parent::getChild($name);
+    }
+
+    /**
+     * Check permission to show banner
+     *
+     * @param int $iterator
+     * @param string $bannerPosition
+     * @return bool
+     */
+    public function isBannerNeedBeShowed($iterator, $bannerPosition)
+    {
+        $currentPage = $this->_productCollection->getCurPage();
+        $startPossition = ($currentPage > 1) ? 12 * ($currentPage - 1) : 0 ;
+        $currentIteration = $startPossition + $iterator;
+
+        return $currentPage <= 3 && $bannerPosition == $currentIteration;
     }
 }

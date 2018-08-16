@@ -122,4 +122,12 @@
             </resources>
         </acl>
     </adminhtml>
+    <default>
+        <sapiha_banner>
+            <sapiha_banner_group>
+                <grid_image_ratio>1/2.25</grid_image_ratio>
+                <list_image_ratio>1/0.42</list_image_ratio>
+            </sapiha_banner_group>
+        </sapiha_banner>
+    </default>
 </config>

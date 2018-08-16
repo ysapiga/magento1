@@ -35,7 +35,6 @@
 <?php
 $_productCollection=$this->getLoadedProductCollection();
 $_helper = $this->helper('catalog/output');
-$banners = $this->getBanners();
 ?>
     <?php if(!$_productCollection->count()): ?>
     <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
@@ -53,7 +52,7 @@ $banners = $this->getBanners();
                     <?php if (count($this->getBanners())>0) : ?>
                         <?php foreach ($this->getBanners() as $banner):?>
 
-                            <?php if($this->getBannerGridPosition($banner) == $listIterator) : ?>
+                            <?php if($this->isBannerNeedBeShowed($listIterator, $this->getBannerListPosition($banner))) : ?>
                                 <li class = 'item'>
                                 <?php echo $this->getChild($banner, 'list')->toHtml();?>
                                 </li>
@@ -137,11 +136,13 @@ $banners = $this->getBanners();
                 <?php endif ?>
                    <?php if (count($this->getBanners())>0) : ?>
                         <?php foreach ($this->getBanners() as $banner):?>
-                            <?php if($this->getBannerGridPosition($banner) == $i) : ?>
+                            <?php if($this->isBannerNeedBeShowed($i, $this->getBannerGridPosition($banner))) : ?>
+                            <?php if ($this->getChild($banner)->getData('is_active') != 0) : ?>
                             <li class="item">
                                 <?php echo $this->getChild($banner)->toHtml();?>
                                 <?php //$i++ ?>
                             </li>
+                            <?php endif; ?>
                             <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>

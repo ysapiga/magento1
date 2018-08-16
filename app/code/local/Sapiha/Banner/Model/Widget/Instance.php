@@ -2,6 +2,8 @@
 
 class Sapiha_Banner_Model_Widget_Instance extends Mage_Widget_Model_Widget_Instance
 {
+    const BANNER_TYPE = 'sapiha_banner/catalog_banner';
+
     public function generateLayoutUpdateXml($blockReference, $templatePath = '')
     {
         $templateFilename = Mage::getSingleton('core/design_package')->getTemplateFilename($templatePath, array(
@@ -14,6 +16,9 @@ class Sapiha_Banner_Model_Widget_Instance extends Mage_Widget_Model_Widget_Insta
             || ($templatePath && !is_readable($templateFilename)))
         {
             return '';
+        }
+        if($this->getType() == self::BANNER_TYPE && $blockReference !== 'catalog.banner' ) {
+            $blockReference = '';
         }
         $parameters = $this->getWidgetParameters();
         $xml = '<reference name="' . $blockReference . '">';
@@ -29,7 +34,7 @@ class Sapiha_Banner_Model_Widget_Instance extends Mage_Widget_Model_Widget_Insta
 
         $hash = Mage::helper('core')->uniqHash();
 
-        if ($this->getType() == 'sapiha_banner/catalog_banner'){
+        if ($this->getType() == self::BANNER_TYPE){
             $prefix = 'sapiha_banner_';
             $xml .= '<block type="' . $this->getType() . '" name="' . $prefix . $hash . '"' . $template . '>';
         } else {

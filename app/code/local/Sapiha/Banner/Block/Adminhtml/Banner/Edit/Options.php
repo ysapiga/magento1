@@ -2,6 +2,7 @@
 
 class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_Block_Widget
 {
+    const ALLOWED_BANNER_PAGES_AMOUNT = 3;
     /**
      * Prepare edit options tap
      *
@@ -19,7 +20,24 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
         }
 
         $helper = Mage::helper('sapiha_banner');
+        $maxGridPosition = (int) Mage::getStoreConfig('catalog/frontend/grid_per_page', Mage::app()->getStore()) * self::ALLOWED_BANNER_PAGES_AMOUNT;
+        $maxListPosition = (int) Mage::getStoreConfig('catalog/frontend/list_per_page', Mage::app()->getStore()) * self::ALLOWED_BANNER_PAGES_AMOUNT;
         $fieldset = new Varien_Data_Form_Element_Fieldset();
+        $fieldset->addField('name', 'text', array(
+            'label' => $helper->__('Name'),
+            'name' => 'parameters[name]',
+            'value' => !empty($parameters['name']) ? $parameters['name'] : '',
+            'required' => true,
+            'maxlength' => '100',
+            'class' => 'validate-no-html-tags validate-length maximum-length-100',
+        ));
+        $fieldset->addType('myimage', 'Sapiha_Banner_Block_Adminhtml_Banner_Renderer_Myimage');
+        $fieldset->addField('image', 'myimage', array(
+            'name' => 'parameters[image]',
+            'value' => !empty($parameters['image']) ? $parameters['image'] : '',
+            'view_type' => 'grid',
+            'required' => true,
+        ));
         $fieldset->addField('upload', 'button', array(
             'value' => Mage::helper('sapiha_banner')->__('Upload Image'),
         ));
@@ -31,7 +49,7 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
             'class' => 'validate-url',
         ));
         $fieldset->addField('instance_id', 'hidden', array(
-                'name' => 'parameters[instance_id]',
+            'name' => 'parameters[instance_id]',
             'value' => !empty($parameters['instance_id']) ? $parameters['instance_id'] : '',
             'required' => false,
         ));
@@ -48,7 +66,8 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
             'name' => 'parameters[grid_position]',
             'value' => !empty($parameters['grid_position']) ? $parameters['grid_position'] : '',
             'required' => true,
-            'class' => 'validate-greater-than-zero',
+            'class' => "validate-number validate-number-range number-range-1-$maxGridPosition",
+            'after_element_html' => "max range is $maxListPosition",
         ));
         $fieldset->addField('banner_list', 'cropper', array(
             'name' => 'parameters[image_list]',
@@ -62,7 +81,8 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
             'name' => 'parameters[list_position]',
             'value' => !empty($parameters['list_position']) ? $parameters['list_position'] : '',
             'required' => true,
-            'class' => 'validate-greater-than-zero',
+            'class' => "validate-number validate-number-range number-range-1-$maxListPosition",
+            'after_element_html' => "max range is $maxListPosition",
         ));
         $fieldset->addField('click_amount', 'text', array(
             'label' => $helper->__('Amount of banner clicks'),
@@ -75,7 +95,8 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
             'name' => 'parameters[content]',
             'required' => true,
             'value' => !empty($parameters['content']) ? $parameters['content'] : '',
-            'config' => Mage::getSingleton('cms/wysiwyg_config')->getConfig()
+            'config' => Mage::getSingleton('cms/wysiwyg_config')->getConfig(),
+            'class' => 'validate-length maximum-length-300',
         ));
         $element->setData('after_element_html', $fieldset->getChildrenHtml());
 

@@ -2,6 +2,7 @@
 
 class Sapiha_Banner_Model_Observer
 {
+    const BANNER_TYPE = "sapiha_banner/catalog_banner";
     /**
      * Delete related banner images
      *
@@ -10,11 +11,13 @@ class Sapiha_Banner_Model_Observer
      */
     public function deleteImages($observer)
     {
-        $parameters = $observer->getObject()->getWidgetParameters();
-        $imageName = substr(strrchr($parameters['image'], '/'), 1)  ;
-        $image = Mage::getModel('sapiha_banner/image');
-        unlink($image->getImagePath('grid') . DS . $imageName);
-        unlink($image->getImagePath('list') . DS . $imageName);
+        if ($observer->getObject()->getData('type') == self::BANNER_TYPE) {
+            $parameters = $observer->getObject()->getWidgetParameters();
+            $imageName = substr(strrchr($parameters['image'], '/'), 1)  ;
+            $image = Mage::getModel('sapiha_banner/image');
+            unlink($image->getImagePath('grid') . DS . $imageName);
+            unlink($image->getImagePath('list') . DS . $imageName);
+        }
     }
 
     /**
@@ -25,34 +28,32 @@ class Sapiha_Banner_Model_Observer
      */
     public function saveBanner($observer)
     {
-        $image = Mage::getModel('sapiha_banner/image');
-        $helper = Mage::helper('sapiha_banner');
-        $_POST = $helper->imageArrayToString($_POST);
-        $widgetInstance = $observer->getDataObject();
+        if($observer->getObject()->getData('type') == self::BANNER_TYPE) {
+            $helper = Mage::helper('sapiha_banner');
+            $widgetParameters = $observer->getObject()->getWidgetParameters();
+            $post = $_POST;
+            $image = Mage::getModel('sapiha_banner/image');
+            $widgetInstance = $observer->getDataObject();
 
-        if ($helper->validateMaxPosition($_POST['parameters']['list_position'], $_POST['parameters']['grid_position'] )) {
             if ($widgetInstance->getId() > 0) {
-                $_POST['parameters']['instance_id'] = $widgetInstance->getId();
+                $widgetParameters ['image'] = unserialize($observer->getObject()->getOrigData('widget_parameters'))['image'];
+                $post['parameters']['instance_id'] = $widgetInstance->getId();
             } else {
-                $helper->getLastWidgetInsertId() + 1;
+                $widgetParameters['instance_id'] = $helper->getWidgetIncrementId();
+                $post['parameters']['instance_id'] = $helper->getWidgetIncrementId();
             }
-            if ($_POST['gridx'] !== "") {
-                $_POST['parameters']['image'] = $image->getImageUrl('grid', $image->getTmpImage());
-                $image->saveFinal($_POST);
-                if ($_POST['parameters']['image'] !== null) {
-                    $_POST['parameters']['image'] = $image->getImageUrl('grid', $image->getName());
 
+            if ($post['gridx'] !== "") {
+                $widgetParameters['image'] = $image->getImageUrl('grid', $image->getTmpImage($widgetParameters['instance_id']));
+                $image->saveFinal($post);
+                if ($widgetParameters['image'] !== null) {
+                    $widgetParameters['image'] = $image->getImageUrl('grid', $image->getName());
                 }
+            } elseif ($widgetParameters['image'] == '') {
+                $widgetParameters['is_active'] = '0';
             }
-            $widgetInstance->setSortOrder($_POST['sort_order'], 0)
-                ->setWidgetParameters(serialize($_POST['parameters']));
-        } else {
-            Mage::getSingleton('core/session')->addError('Banner Position is higher then required value, please chose new values');
-            $_POST['parameters']['grid_position'] = '';
-            $_POST['parameters']['list_position'] = '';
-            $widgetInstance->setSortOrder($_POST['sort_order'], 0)
-                ->setWidgetParameters(serialize($_POST['parameters']));
-            Mage::app()->getResponse()->setRedirect(Mage::getUrl('*/*/edit'));
+            $widgetInstance->setSortOrder($post['sort_order'], 0)
+                ->setWidgetParameters(serialize($widgetParameters));
         }
     }
 }

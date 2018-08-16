@@ -21,5 +21,4 @@ class Sapiha_Banner_Model_Source_RatioList
 
         return $this->options;
     }
-
 }

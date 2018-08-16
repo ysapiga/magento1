@@ -10,12 +10,7 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     /**
      * @var array
      */
-    private $allowedImageExtensions = array('jpg', 'jpeg', 'png');
-
-    /**
-     * @var string
-     */
-    private $name;
+    private $allowedImageExtensions = ['jpg', 'jpeg', 'png'];
 
     /**
      * Get allowed image extensions
@@ -85,7 +80,7 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      * @param array $listCoords
      * @param string $fileExtension
      */
-    public function cropImages(array $gridCoords, array $listCoords)
+    public function cropImages(array $gridCoords, array $listCoords, $instanceId)
     {
         $fileManager = new Varien_Io_File();
         $gridDirName = $this->getImagePath('grid');
@@ -100,8 +95,8 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
             $fileManager->mkdir($listDirName);
         }
 
-        $image = $this->getTmpImagePath();
-        $fileExtension = $this->getImgExtension();
+        $image = $this->getTmpImagePath($instanceId);
+        $fileExtension = $this->getImgExtension($instanceId);
         $newImageName = Mage::helper('core')->uniqHash() . '.' . $fileExtension;
         $this->setName($newImageName);
 
@@ -125,14 +120,13 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      *
      * @return string
      */
-    public function getTmpImage()
+    public function getTmpImage($instanceId)
     {
-
         $image = false;
         $dirFiles =  scandir(Mage::getBaseDir('media') . DS .self::IMAGES_MAIN_DIR . DS . 'tmp' . DS);
 
         foreach ($dirFiles as $file) {
-            if (strpos($file, 'file' ) !== null){
+            if (strpos($file, $instanceId ) !== false){
                 $image = $file;
             }
         }
@@ -145,9 +139,9 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      *
      * @return string
      */
-    public function getTmpImagePath()
+    public function getTmpImagePath($instanceId)
     {
-        return Mage::getBaseDir('media') . DS .     self::IMAGES_MAIN_DIR . DS . 'tmp'. DS . $this->getTmpImage();
+        return Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . 'tmp'. DS . $this->getTmpImage($instanceId);
     }
 
     /**
@@ -155,9 +149,9 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      *
      * @return string
      */
-    public function getImgExtension()
+    public function getImgExtension($instanceId)
     {
-        return substr(stristr($this->getTmpImage(),"."), 1);
+        return substr(stristr($this->getTmpImage($instanceId),"."), 1);
     }
 
     /**
@@ -192,55 +186,12 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     {
         if ($postData['gridx'] != ''){
             try {
-                $this->cropImages($this->prepareCoords('grid', $postData), $this->prepareCoords(   'list', $postData));
-
-                if($this->validateImageRatio('list') == false || $this->validateImageRatio('grid') == false) {
-                    unlink($this->getImagePath('grid', $this->getName()));
-                    unlink($this->getImagePath('list', $this->getName()));
-                    Mage::getSingleton('core/session')->addError('Image was not saved because of inapropriate ratio');
-                    $_POST['parameters']['image'] = null;
-                }
-                unlink($this->getTmpImagePath());
+                $instanceId = $postData['parameters']['instance_id'];
+                $this->cropImages($this->prepareCoords('grid', $postData), $this->prepareCoords(   'list', $postData), $instanceId);
+                unlink($this->getTmpImagePath($postData['parameters']['instance_id']));
             } catch (Exception $e) {
                 $e->getMessage();
             }
         }
-    }
-
-    /**
-     * Convert ration to int
-     *
-     * @param $ratio
-     * @return float
-     */
-    public function convertRatio($ratio)
-    {
-        $result = explode('/', $ratio);
-        return round($result[0]/$result[1],PHP_ROUND_HALF_UP);
-    }
-
-    /**
-     * Image ratio validation
-     *
-     * @param $type
-     * @param $image
-     * @return bool
-     * @throws Mage_Core_Model_Store_Exception
-     */
-    public function validateImageRatio($type, $image)
-    {
-        $validation = true;
-        $requiredGridRatio = $this->convertRatio(Mage::getStoreConfig('sapiha_banner/sapiha_banner_group/grid_image_ratio', Mage::app()->getStore()));
-        $requiredListRatio = $this->convertRatio(Mage::getStoreConfig('sapiha_banner/sapiha_banner_group/list_image_ratio', Mage::app()->getStore()));
-
-        if ($type == 'list' && round(getimagesize($image)[0] / getimagesize($image)[1], PHP_ROUND_HALF_UP) != $requiredListRatio) {
-            $validation = false;
-        }
-
-        if ($type == 'grid' && round(getimagesize($image)[0] / getimagesize($image)[1], PHP_ROUND_HALF_UP) != $requiredGridRatio) {
-            $validation = false;
-        }
-
-        return $validation;
     }
 }

@@ -10,16 +10,13 @@
                 </helper_block>
                 <sort_order>10</sort_order>
             </form>
-            <name>
+            <is_active translate="label">
+                <label>Enable banner</label>
                 <visible>1</visible>
-                <label>Name</label>
-                <type>text</type>
-            </name>
-            <image translate="label">
-                <visible>1</visible>
-                <label>Main Image</label>
-                <type>image</type>
-            </image>
+                <required>1</required>
+                <type>select</type>
+                <source_model>adminhtml/system_config_source_yesno</source_model>
+            </is_active>
         </parameters>
     </banner>
 </widgets>

@@ -7,6 +7,7 @@ jQuery(document).ready(function () {
     var crooperGridImg = jQuery("#gridcroopedImage");
     var listRatio = convertRatio(jQuery("#listratio").val());
     var gridRatio = convertRatio(jQuery("#gridratio").val());
+    var instanceId = jQuery('#instance_id').val();
     uploadGridBtn.attr('disabled', 'disabled');
     function setGridCoords(c)
     {
@@ -35,6 +36,7 @@ jQuery(document).ready(function () {
         var form_data = new FormData();
         var file_data = jQuery(uploadGridFileFieldSelector).prop('files')[0];
         form_data.append('image', file_data);
+        form_data.append('instance_id',instanceId);
         loader.show();
         jQuery.ajax({
             url: '/sapiha_banner_admin/adminhtml_banner/upload/form_key/' + FORM_KEY,
@@ -49,28 +51,29 @@ jQuery(document).ready(function () {
                  if (serverResponse.error)
                  {
                      alert(serverResponse.error);
-                 }
-                 crooperGridImg.attr('src', serverResponse.image);
-                 crooperListImg.attr('src', serverResponse.image);
-                jQuery(function () {
-                    crooperGridImg.Jcrop({
-                        bgColor: 'white',
-                        onChange: setGridCoords,
-                        onSelect: setGridCoords,
-                        aspectRatio: gridRatio,
-                        setSelect: [100, 100, 50, 50],
-                    });
-                });
-                 jQuery(function () {
-                     crooperListImg.Jcrop({
-                         bgColor: 'white',
-                         onChange: setListCoords,
-                         onSelect: setListCoords,
-                         aspectRatio: listRatio,
-                         setSelect: [100, 100, 50, 50],
+                 } else {
+                     crooperGridImg.attr('src', serverResponse.image);
+                     crooperListImg.attr('src', serverResponse.image);
+                     jQuery(function () {
+                         crooperGridImg.Jcrop({
+                             bgColor: 'white',
+                             onChange: setGridCoords,
+                             onSelect: setGridCoords,
+                             aspectRatio: gridRatio,
+                             setSelect: [100, 100, 50, 50],
+                         });
                      });
+                     jQuery(function () {
+                         crooperListImg.Jcrop({
+                             bgColor: 'white',
+                             onChange: setListCoords,
+                             onSelect: setListCoords,
+                             aspectRatio: listRatio,
+                             setSelect: [100, 100, 50, 50],
+                         });
 
-                 });
+                     });
+                 }
              }
         });
     });
