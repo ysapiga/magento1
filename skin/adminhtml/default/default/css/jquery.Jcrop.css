@@ -11,6 +11,11 @@
 #html-body > div.content-header-floating{
   z-index: 1000;
 }
+
+img {
+  max-height: 600px;
+  max-width: 100%;
+}
 .jcrop-holder {
   direction: ltr;
   text-align: left;
