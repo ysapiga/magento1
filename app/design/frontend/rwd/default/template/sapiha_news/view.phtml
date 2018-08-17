@@ -1,0 +1,16 @@
+<?php $_helper = $this->helper('catalog/output');
+$helper = Mage::helper('sapiha_news');?>
+<?php $news = $this->getNews(); ?>
+    <div class="newsWrapper">
+        <img src="<?php echo $helper->resizeImg($helper->getImagePath($news->getId()), 300, 300)  ?>" id = "newsImage"/>
+        <div class="product-shop">
+            <div class="f-fix">
+                <div class="product-primary">
+                    <h1 class="product-name"><?php echo $news->getTitle(); ?></h1>
+                </div>
+                <div class="desc std"  style="width: 100%">
+                    <?php echo $news->getContent(); ?>
+                </div>
+            </div>
+        </div>
+    </div>

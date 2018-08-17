@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <modules>
+        <Sapiha_Export>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Sapiha_Export>
+    </modules>
+</config>

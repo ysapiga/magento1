@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <tabs>
+        <sapiha_news_config translate="label" module="sapiha_news">
+            <label>News</label>
+            <sort_order>99999</sort_order>
+        </sapiha_news_config>
+    </tabs>
+    <sections>
+        <sapiha_news_options translate="label" module="sapiha_news">
+            <label>News Config</label>
+            <tab>sapiha_news_config</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <list_options translate="label">
+                    <label>News settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <count translate="label">
+                            <label>Display number of news by per page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </count>
+                    </fields>
+                </list_options>
+            </groups>
+        </sapiha_news_options>
+    </sections>
+</config>
