@@ -1,0 +1,95 @@
+<?php
+/* @var $this Sapiha_Guestalert_Block_Form */
+if ($this->canShow()) :?>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close1">&times;</span>
+<form id="" method="post" action="<?php echo $this->getPriceActionOfForm()?>">
+    <div class="fieldset">
+        <h2 class="legend">Register For Price Alert</h2>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="customer-name">
+                    <div class="field name-firstname">
+                        <label class="required" for="firstname"><em>*</em><?php echo $this->__('Name')?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" maxlength="255" title="Name" value="" name="guest_name" id="guestname">
+                        </div>
+                    </div>
+                    <div class="email-friend">
+                        <label class="required" for="guest_email"><em>*</em><?php echo $this->__('Email Adress')?></label>
+                        <div class="input-box">
+                            <input type="email" class="input-text required-entry" maxlength="255" title="email" value="" name="guest_email" id="guest_email  ">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <p class="required">* <?php echo $this->__('Required Fields')?></p>
+        <p class="back-link"><a class="back-link" href="<?php echo $this->getBaseUrl();?>"><small>&laquo;</small>Back</a></p>
+        <button class="button" title="Submit" type="submit"><span><span><?php echo $this->__('Submit')?></span></span></button>
+    </div>
+</form>
+    </div>
+</div>
+<div id="myModal2" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close1">&times;</span>
+        <form id="" method="post" action="<?php echo $this->getStockActionOfForm()?>">
+            <div class="fieldset">
+                <h2 class="legend">Register For Stock Alert</h2>
+                <ul class="form-list">
+                    <li class="fields">
+                        <div class="customer-name">
+                            <div class="field name-firstname">
+                                <label class="required" for="firstname"><em>*</em><?php echo $this->__('Name')?></label>
+                                <div class="input-box">
+                                    <input type="text" class="input-text required-entry" maxlength="255" title="Name" value="" name="guest_name" id="guestname">
+                                </div>
+                            </div>
+                            <div class="email-friend">
+                                <label class="required" for="guest_email"><em>*</em><?php echo $this->__('Email Adress')?></label>
+                                <div class="input-box">
+                                    <input type="email" class="input-text required-entry" maxlength="255" title="email" value="" name="guest_email" id="guest_email  ">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--Button & Link-->
+            <div class="buttons-set">
+                <p class="required">* <?php echo $this->__('Required Fields')?></p>
+                <p class="back-link"><a class="back-link" href="<?php echo $this->getBaseUrl();?>"><small>&laquo;</small>Back</a></p>
+                <button class="button" title="Submit" type="submit"><span><span><?php echo $this->__('Submit')?></span></span></button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php endif; ?>
+<script>
+    jQuery(document).ready(function (){
+        var modal = jQuery('#myModal'),
+            btn = jQuery('#myBtn'),
+            span = jQuery('.close1')[0],
+            modal2 = jQuery('#myModal2'),
+            btn2 = jQuery('#myBtn2'),
+            span2 = jQuery('.close1')[1];
+        btn.on('click', function () {
+            modal.show();
+        });
+        span.on('click', function () {
+            modal.hide();
+            modal2.hide();
+        });
+        btn2.on('click', function () {
+            modal2.show();
+        });
+        span2.on('click', function () {
+            modal2.hide();
+        });
+    })
+</script>
