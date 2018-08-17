@@ -2,7 +2,7 @@
 <layout>
     <adminhtml_kasa_index>
         <reference name="content">
-            <block type="sapiha_kasa/adminhtml_kasa" />
+            <block type="sapiha_kasa/adminhtml_kasa_container" />
         </reference>
     </adminhtml_kasa_index>
     <adminhtml_sales_order_view>
