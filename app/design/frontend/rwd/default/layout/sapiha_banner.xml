@@ -12,7 +12,7 @@
         </reference>
         <reference name="content">
             <remove name="product_list" />
-            <block type="sapiha_banner/catalog_banner" name="catalog.banner" before="category.products" template = 'sapiha_banner/list.phtml'>
+            <block type="sapiha_banner/catalog_list" name="catalog.banner" before="category.products" template = 'sapiha_banner/list.phtml'>
                 <block type="core/text_list" name="product_list.name.after" as="name.after" />
                 <block type="core/text_list" name="product_list.after" as="after" />
                 <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">

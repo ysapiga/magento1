@@ -10,21 +10,18 @@ class Sapiha_Banner_Adminhtml_BannerController extends Mage_Adminhtml_Controller
      */
     public function uploadAction()
     {
-        $response = array();
+        $response = [];
         $helper = Mage::helper('sapiha_banner');
         $image = Mage::getModel('sapiha_banner/image');
-        $instanceId = $this->getRequest()->getPost('instance_id');
-
-        if ($instanceId == "") {
-            $instanceId = $helper->getWidgetIncrementId();
-        }
 
         if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
+            $name = Mage::helper('core')->uniqHash();
+            Mage::getSingleton('adminhtml/session')->setTmpImageName($name);
             $uploader = new Varien_File_Uploader('image');
             $uploader->setFilesDispersion(false);
             $uploader->setAllowedExtensions($image->getAllowedImageExtensions());
             $uploader->setAllowRenameFiles(true);
-            $image->setName("$instanceId." . $uploader->getFileExtension());
+            $image->setName("$name." . $uploader->getFileExtension());
 
             try {
                 $uploader->save($image->getImagePath('tmp'), $image->getName());

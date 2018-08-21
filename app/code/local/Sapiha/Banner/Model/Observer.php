@@ -3,6 +3,7 @@
 class Sapiha_Banner_Model_Observer
 {
     const BANNER_TYPE = "sapiha_banner/catalog_banner";
+
     /**
      * Delete related banner images
      *
@@ -29,25 +30,25 @@ class Sapiha_Banner_Model_Observer
     public function saveBanner($observer)
     {
         if($observer->getObject()->getData('type') == self::BANNER_TYPE) {
-            $helper = Mage::helper('sapiha_banner');
             $widgetParameters = $observer->getObject()->getWidgetParameters();
-            $post = $_POST;
+            $post = Mage::app()->getRequest()->getPost();
             $image = Mage::getModel('sapiha_banner/image');
             $widgetInstance = $observer->getDataObject();
+            $tmpImageName = Mage::getSingleton('adminhtml/session')->getTmpImageName();
 
             if ($widgetInstance->getId() > 0) {
                 $widgetParameters ['image'] = unserialize($observer->getObject()->getOrigData('widget_parameters'))['image'];
-                $post['parameters']['instance_id'] = $widgetInstance->getId();
+                $widgetParameters['imageList'] =  unserialize($observer->getObject()->getOrigData('widget_parameters'))['imageList'];
             } else {
-                $widgetParameters['instance_id'] = $helper->getWidgetIncrementId();
-                $post['parameters']['instance_id'] = $helper->getWidgetIncrementId();
+                $widgetParameters['instance_id'] = Mage::helper('sapiha_banner')->getWidgetIncrementId();
             }
 
             if ($post['gridx'] !== "") {
-                $widgetParameters['image'] = $image->getImageUrl('grid', $image->getTmpImage($widgetParameters['instance_id']));
+                $widgetParameters['image'] = $image->getImageUrl('grid', $image->getTmpImage($tmpImageName));
                 $image->saveFinal($post);
                 if ($widgetParameters['image'] !== null) {
                     $widgetParameters['image'] = $image->getImageUrl('grid', $image->getName());
+                    $widgetParameters['imageList'] = $image->getImageUrl('list', $image->getName());
                 }
             } elseif ($widgetParameters['image'] == '') {
                 $widgetParameters['is_active'] = '0';

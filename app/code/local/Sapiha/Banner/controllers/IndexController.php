@@ -10,14 +10,12 @@ class Sapiha_Banner_IndexController extends Mage_Core_Controller_Front_Action
      */
     public function updateClickAction()
     {
-        $model = Mage::getModel('sapiha_banner/banner');
         $id = (int)$this->getRequest()->getParam('id');
-        $modelId =  $model->getResource()->getIdByWidgetId($id);
+        $model = Mage::getModel('sapiha_banner/banner')->load($id, 'banner_id');
 
-        if ( $modelId != null) {
+        if ( $model->getId() != null) {
 
             try{
-                $model->load($modelId);
                 $clickAmount = $model->getClickCount();
                 $clickAmount++;
                 $model->setId($model->getId())->setClickCount($clickAmount)->save();
@@ -26,6 +24,7 @@ class Sapiha_Banner_IndexController extends Mage_Core_Controller_Front_Action
                 Mage::logException($e);
                 $this->_getSession()->addError($e->getMessage());
             }
+
         } else {
             $model->setData('banner_id', $id );
             $model->setData('click_count', 1);

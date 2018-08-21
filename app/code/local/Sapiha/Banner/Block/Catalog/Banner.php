@@ -1,8 +1,7 @@
 <?php
 
-class Sapiha_Banner_Block_Catalog_Banner extends Mage_Catalog_Block_Product_List
+class Sapiha_Banner_Block_Catalog_Banner extends Mage_Core_Block_Template
 {
-
     /**
      * Sapiha_Banner_Block_Catalog_Banner constructor
      */
@@ -12,73 +11,32 @@ class Sapiha_Banner_Block_Catalog_Banner extends Mage_Catalog_Block_Product_List
     }
 
     /**
-     * Get array of banners for current page
+     * Set appropriate banner image
      *
-     * @return array
-     */
-    public function getBanners()
-    {
-        $banners = [];
-
-        foreach ($this->getSortedChildren() as $banner) {
-            if (strpos($banner, 'sapiha_banner') !== false){
-                $banners [] = $banner;
-            }
-        }
-
-        return $banners;
-    }
-
-    /**
-     * Get banner grid position param
-     *
-     * @param $banner
-     * @return mixed
-     */
-    public function getBannerGridPosition($banner)
-    {
-        return $this->getChild($banner)->getData('grid_position');
-    }
-
-    /**
-     * Get banner list position param
-     *
-     * @param $banner
-     * @return mixed
-     */
-    public function getBannerListPosition($banner)
-    {
-        return $this->getChild($banner)->getData('list_position');
-    }
-
-    /**
-     * @param string $name
+     * @param array $bannerInfo
      * @param string $type
-     * @return mixed
+     * @return array
+     * @throws Mage_Core_Exception
      */
-    public function getChild($name = '', $type = '')
+    public function convertImage($bannerInfo, $type)
     {
         if ($type == 'list') {
-            $data = str_replace('grid', 'list', parent::getChild($name)->getData('image'));
-            return parent::getChild($name)->setData('image', $data);
+            $bannerInfo['image'] = $bannerInfo['imageList'];
+        } elseif ($type!= 'list' && $type != 'grid') {
+            Mage::throwException('Unsupported product list mode');
         }
 
-        return parent::getChild($name);
+        return $bannerInfo;
     }
 
     /**
-     * Check permission to show banner
-     *
-     * @param int $iterator
-     * @param string $bannerPosition
-     * @return bool
+     * @param array $bannerInfo
+     * @param string $type
+     * @return void
+     * @throws Mage_Core_Exception
      */
-    public function isBannerNeedBeShowed($iterator, $bannerPosition)
+    public function printBanner($bannerInfo, $type)
     {
-        $currentPage = $this->_productCollection->getCurPage();
-        $startPossition = ($currentPage > 1) ? 12 * ($currentPage - 1) : 0 ;
-        $currentIteration = $startPossition + $iterator;
-
-        return $currentPage <= 3 && $bannerPosition == $currentIteration;
+        return $this->setData( $this->convertImage($bannerInfo, $type))->toHtml();
     }
 }

@@ -1,10 +1,8 @@
 <?php
 
-class Sapiha_Banner_Block_Adminhtml_Banner_Renderer_Myimage extends  Varien_Data_Form_Element_Abstract
+class Sapiha_Banner_Block_Adminhtml_Banner_Renderer_Banner_Image extends Varien_Data_Form_Element_Abstract
 {
     /**
-     * Constructor
-     *
      * @param array $data
      */
     public function __construct($data)

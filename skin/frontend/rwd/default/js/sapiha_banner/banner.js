@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
     var height = 0;
     var i = 0;
     var isAjaxDone;
-    jQuery("ol.products-list li img").each(function(){
+    jQuery("ol.products-list li.item").each(function(){
         if( !this.id != 'bannerImg') {
             height += this.height;
             i = i + 1;

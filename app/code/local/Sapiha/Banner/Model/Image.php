@@ -32,11 +32,8 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     public function getImagePath($type, $name = '')
     {
         $path = Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . $type;
-        if ($name !== '' ) {
-            $path = Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . $type . DS . $name;
-        } 
 
-        return $path;
+        return ($name == '') ? $path : $path . DS . $name;
     }
 
     /**
@@ -48,12 +45,10 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      */
     public function getImageUrl($type, $name = '')
     {
+
         $path = Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type;
-        if ($name !== '') {
-            $path = Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type . DS . $name;
-        }
-        
-        return $path;
+
+        return ($name == '') ? $path : $path . DS . $name;
     }
 
     /**
@@ -64,13 +59,7 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      */
     public function validateImageSize($image)
     {
-        $validation = true;
-
-        if (getimagesize($image)[0] < 800 || getimagesize($image)[1] < 800) {
-            $validation = false;
-        }
-
-        return $validation;
+        return !(getimagesize($image)[0] < 800 || getimagesize($image)[1] < 800);
     }
 
     /**
@@ -79,12 +68,14 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      * @param array $gridCoords
      * @param array $listCoords
      * @param string $fileExtension
+     * @return void
      */
-    public function cropImages(array $gridCoords, array $listCoords, $instanceId)
+    public function cropImages(array $gridCoords, array $listCoords)
     {
         $fileManager = new Varien_Io_File();
         $gridDirName = $this->getImagePath('grid');
         $listDirName = $this->getImagePath('list');
+        $tmpImageName = Mage::getSingleton('adminhtml/session')->getTmpImageName();
 
 
         if (!is_dir($gridDirName)) {
@@ -95,8 +86,8 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
             $fileManager->mkdir($listDirName);
         }
 
-        $image = $this->getTmpImagePath($instanceId);
-        $fileExtension = $this->getImgExtension($instanceId);
+        $image = $this->getTmpImagePath($tmpImageName);
+        $fileExtension = $this->getImgExtension($tmpImageName);
         $newImageName = Mage::helper('core')->uniqHash() . '.' . $fileExtension;
         $this->setName($newImageName);
 
@@ -128,6 +119,7 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
         foreach ($dirFiles as $file) {
             if (strpos($file, $instanceId ) !== false){
                 $image = $file;
+                break;
             }
         }
 
@@ -151,7 +143,7 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      */
     public function getImgExtension($instanceId)
     {
-        return substr(stristr($this->getTmpImage($instanceId),"."), 1);
+        return substr(stristr($this->getTmpImage($instanceId), "."), 1);
     }
 
     /**
@@ -181,14 +173,17 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      *
      * @param $postData
      * @param $fileExtension
+     * @return void
      */
     public function saveFinal($postData)
     {
         if ($postData['gridx'] != ''){
+
             try {
-                $instanceId = $postData['parameters']['instance_id'];
-                $this->cropImages($this->prepareCoords('grid', $postData), $this->prepareCoords(   'list', $postData), $instanceId);
-                unlink($this->getTmpImagePath($postData['parameters']['instance_id']));
+                $this->cropImages($this->prepareCoords('grid', $postData), $this->prepareCoords(   'list', $postData));
+                $tmpImageName = Mage::getSingleton('adminhtml/session')->getTmpImageName();
+                unlink($this->getTmpImagePath($tmpImageName));
+
             } catch (Exception $e) {
                 $e->getMessage();
             }

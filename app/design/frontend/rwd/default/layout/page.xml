@@ -122,7 +122,7 @@
                 <label>Main Content Area</label>
             </block>
 
-            <block type="sapiha_banner/catalog_banner" name="catalog.banner" as="catalog.banner">
+            <block type="sapiha_banner/catalog_list" name="catalog.banner" as="catalog.banner">
                 <label>Product list</label>
             </block>
 
