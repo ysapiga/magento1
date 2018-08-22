@@ -6,11 +6,22 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
     /**
      * @var string
      */
-    protected $_code = 'sapiha_starshipment';
-
     const FIRST_METHOD = 'to_long';
+
+    /**
+     * @var string
+     */
     const SECOND_METHOD = 'faster_than_long';
+
+    /**
+     * @var string
+     */
     const THIRD_METHOD = 'teleport';
+
+    /**
+     * @var string
+     */
+    protected $_code = 'sapiha_starshipment';
 
     /**
      * Collect Shipping rates
@@ -21,9 +32,9 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
         $result = Mage::getModel('shipping/rate_result');
-        $result->append($this->_getFirstRate());
-        $result->append($this->_getSecondtRate($request));
-        $result->append($this->_getThirdRate($request));
+        $result->append($this->getFirstRate());
+        $result->append($this->getSecondtRate($request));
+        $result->append($this->getThirdRate($request));
 
         return $result;
     }
@@ -47,7 +58,7 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
      *
      * @return Mage_Core_Model_Abstract
      */
-    protected function _getFirstRate()
+    protected function getFirstRate()
     {
         $helper = Mage::helper('sapiha_starshipment');
         $rate = Mage::getModel('shipping/rate_result_method');
@@ -67,7 +78,7 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
      * @param $request
      * @return Mage_Core_Model_Abstract
      */
-    protected function _getSecondtRate($request)
+    protected function getSecondtRate($request)
     {
         $helper = Mage::helper('sapiha_starshipment');
         $rate = Mage::getModel('shipping/rate_result_method');
@@ -75,8 +86,8 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
         $rate->setCarrierTitle($this->getConfigData('title'));
         $rate->setMethod(self::SECOND_METHOD);
         $rate->setMethodTitle($helper->__('Express delivery (less than 5 days)'));
-        $rate->setPrice($this->_setSecondRatePrice($request));
-        $rate->setCost($this->_setSecondRatePrice($request));
+        $rate->setPrice($this->setSecondRatePrice($request));
+        $rate->setCost($this->setSecondRatePrice($request));
 
         return $rate;
     }
@@ -87,7 +98,7 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
      * @param $request
      * @return Mage_Core_Model_Abstract
      */
-    protected function _getThirdRate($request)
+    protected function getThirdRate($request)
     {
         $helper = Mage::helper('sapiha_starshipment');
         $rate = Mage::getModel('shipping/rate_result_method');
@@ -95,8 +106,8 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
         $rate->setCarrierTitle($this->getConfigData('title'));
         $rate->setMethod(self::THIRD_METHOD);
         $rate->setMethodTitle($helper->__('Teleport  (less than 1 day)'));
-        $rate->setPrice($this->_setThirdRatePrice($request));
-        $rate->setCost($this->_setThirdRatePrice($request));
+        $rate->setPrice($this->setThirdRatePrice($request));
+        $rate->setCost($this->setThirdRatePrice($request));
 
         return $rate;
     }
@@ -107,18 +118,21 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
      * @param $request
      * @return float|int
      */
-    public function _setSecondRatePrice($request)
+    public function setSecondRatePrice($request)
     {
         $cartAmount = $request->getPackageValueWithDiscount();
         $percent = 0.05;
+
         if (count($request->getAllItems()) > 2) {
             $percent = $percent + 0.02;
         }
+
         if (Mage::getModel('core/date')->date('N') > 5){
             $percent = $percent + 0.03;
         }
 
         $price = $cartAmount * $percent;
+
         return $price;
     }
 
@@ -128,7 +142,7 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
      * @param $request
      * @return float|int
      */
-    public function _setThirdRatePrice($request)
+    public function setThirdRatePrice($request)
     {
         $cartAmount = $request->getPackageValueWithDiscount();
 
@@ -148,6 +162,9 @@ class Sapiha_Starshipment_Model_Carrier extends Mage_Shipping_Model_Carrier_Abst
         return $price;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function isTrackingAvailable()
     {
         return false;

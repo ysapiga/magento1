@@ -20,6 +20,7 @@ class Sapiha_Kasa_Model_Total extends Mage_Sales_Model_Quote_Address_Total_Abstr
         $shippingAmount = $address->getShippingAmount();
         $kasaComision = $subtotal * 0.03;
         $finalPrice = $subtotal + $kasaComision + $baseDiscount + $taxAmount + $shippingAmount;
+
         if (filter_var($finalPrice, FILTER_VALIDATE_INT)) {
             $lootedCoins = 1;
             $finalPrice = $finalPrice + $lootedCoins;
@@ -32,8 +33,6 @@ class Sapiha_Kasa_Model_Total extends Mage_Sales_Model_Quote_Address_Total_Abstr
         $address->setCustomDiscount($kasaComision);
         $address->setBaseGrandTotal($finalPrice);
         $address->setGrandTotal($finalPrice);
-        Mage::unregister('looted_coins');
-        Mage::register('looted_coins', $lootedCoins);
 
         return $this;
     }
@@ -43,8 +42,10 @@ class Sapiha_Kasa_Model_Total extends Mage_Sales_Model_Quote_Address_Total_Abstr
      *
      * @return void
      */
-    public function fetch(Mage_Sales_Model_Quote_Address $address){
+    public function fetch(Mage_Sales_Model_Quote_Address $address)
+    {
         $amount = $address->getCustomDiscount();
+
         if ($amount != 0) {
             $address->addTotal([
                 'code' => $this->getCode(),
@@ -64,6 +65,7 @@ class Sapiha_Kasa_Model_Total extends Mage_Sales_Model_Quote_Address_Total_Abstr
     {
         $result = true;
         $items = $this->_getAddressItems($address);
+
         if (!count($items)) {
             $result = false;
         }
@@ -71,17 +73,15 @@ class Sapiha_Kasa_Model_Total extends Mage_Sales_Model_Quote_Address_Total_Abstr
         $quote = $address->getQuote();
 
         $shipping = $address->getShippingMethod();
+
         if(!$shipping) {
             $result = false;
         }
 
         $payment = $quote->getPayment();
-        if(!$payment) {
-            $result = false;
-        }
 
-        $paymentCode = $payment->getMethod();
-        if(!$paymentCode || $paymentCode != 'sapiha_kasa') {
+        if (!$payment || !$payment->getMethod() || $payment->getMethod() != 'sapiha_kasa')
+        {
             $result = false;
         }
 

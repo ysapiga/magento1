@@ -18,9 +18,13 @@ $table = $installer->getConnection()
     ))
     ->addColumn('robbery_amount', Varien_Db_Ddl_Table::TYPE_FLOAT, 11, array(
         'nullable'  => true,
+    ))
+    ->addColumn('kasa_percent', Varien_Db_Ddl_Table::TYPE_FLOAT, 11, array(
+        'nullable'  => true,
     ));
+
 $table  ->addForeignKey($installer->getFkName('sapiha_kasa/table_kasa_order', 'order_id', 'sales/order', 'entity_id'),
-    'order_id', $installer->getTable('sales/quote'), 'entity_id',
+    'order_id', $installer->getTable('sales/order'), 'entity_id',
     Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE);
 $installer->getConnection()->createTable($table);
 

@@ -1,4 +1,5 @@
 <?php
+
 class Sapiha_Kasa_Block_Adminhtml_Renderer_Order extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
     /**

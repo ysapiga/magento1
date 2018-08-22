@@ -5,42 +5,6 @@
             <version>0.0.1</version>
         </Sapiha_Kasa>
     </modules>
-    <admin>
-        <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <sapiha_kasa before="Mage_Adminhtml">Sapiha_Kasa_Adminhtml</sapiha_kasa>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
-    <adminhtml>
-        <menu>
-            <sapiha_kasa module="sapiha_kasa">
-                <title>Kasa Payment Info</title>
-                <sort_order>85</sort_order>
-                <action>adminhtml/kasa/index</action>
-            </sapiha_kasa>
-        </menu>
-        <layout>
-            <updates>
-                <sapiha_kasa>
-                    <file>sapiha_kasa.xml</file>
-                </sapiha_kasa>
-            </updates>
-        </layout>
-    </adminhtml>
-    <frontend>
-        <layout>
-            <updates>
-                <sapiha_kasa>
-                    <file>sapiha_kasa.xml</file>
-                </sapiha_kasa>
-            </updates>
-        </layout>
-    </frontend>
     <global>
         <models>
             <sapiha_kasa>
@@ -123,6 +87,42 @@
             </payment_method_is_active>
         </events>
     </global>
+    <frontend>
+        <layout>
+            <updates>
+                <sapiha_kasa>
+                    <file>sapiha_kasa.xml</file>
+                </sapiha_kasa>
+            </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <menu>
+            <sapiha_kasa module="sapiha_kasa">
+                <title>Kasa Payment Info</title>
+                <sort_order>85</sort_order>
+                <action>adminhtml/kasa/index</action>
+            </sapiha_kasa>
+        </menu>
+        <layout>
+            <updates>
+                <sapiha_kasa>
+                    <file>sapiha_kasa.xml</file>
+                </sapiha_kasa>
+            </updates>
+        </layout>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <sapiha_kasa before="Mage_Adminhtml">Sapiha_Kasa_Adminhtml</sapiha_kasa>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
     <default>
         <payment>
             <sapiha_kasa>
