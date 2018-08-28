@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<layout>
+    <sales_order_view>
+        <reference name="order_totals">
+            <block type="sapiha_kasa/sales_order_totals" />
+        </reference>
+    </sales_order_view>
+    <sales_order_invoice>
+        <reference name="invoice_totals">
+            <block type="sapiha_kasa/sales_order_totals" />
+        </reference>
+    </sales_order_invoice>
+    <sales_order_creditmemo>
+        <reference name="creditmemo_totals">
+            <block type="sapiha_kasa/sales_order_totals" />
+        </reference>
+    </sales_order_creditmemo>
+</layout>
