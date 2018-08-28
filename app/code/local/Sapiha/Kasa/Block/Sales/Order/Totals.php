@@ -12,9 +12,9 @@ class Sapiha_Kasa_Block_Sales_Order_Totals extends Mage_Core_Block_Abstract
         $orderId = $order->getId();
 
         if ($orderId !== null) {
-            $kasaAmount = $kasaAmount->load($kasaAmount->getResource()->loadByOrderId($orderId));
+            $kasaAmount = $kasaAmount->load($orderId, 'order_id');
         } else {
-            $kasaAmount = $kasaAmount->load($kasaAmount->getResource()->loadByOrderId($order->getData('order_id')));
+            $kasaAmount = $kasaAmount->load($order->getData('order_id'), 'order_id');
         }
 
         if ($kasaAmount->getRobberyAmount()) {
