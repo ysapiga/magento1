@@ -19,7 +19,6 @@ class Sapiha_Banner_Model_Image_Processor extends Mage_Core_Model_Abstract
         foreach ($this->getAllowedBannerTypes() as $type)
         {
             $image->deleteImageFile($type, $name);
-
         }
     }
 
