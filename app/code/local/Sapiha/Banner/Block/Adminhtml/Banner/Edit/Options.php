@@ -2,6 +2,7 @@
 
 class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_Block_Widget
 {
+
     const ALLOWED_BANNER_PAGES_AMOUNT = 3;
 
     /**
@@ -16,7 +17,7 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
         $banner = Mage::getModel('sapiha_banner/banner');
 
         if ($widgetInstance !== null) {
-            $clickAmount = $banner->load($banner->getResource()->getIdByWidgetId($widgetInstance->getId()))->getClickCount();
+            $clickAmount = $banner->load($widgetInstance->getId(), 'banner_id')->getClickCount();
             $parameters = $widgetInstance->getWidgetParameters();
         }
 

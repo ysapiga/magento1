@@ -23,16 +23,29 @@ class Sapiha_Banner_Block_Catalog_List extends Mage_Catalog_Block_Product_List
     /**
      * Check permission to show banner
      *
+     * @param Sapiha_Banner_Block_Catalog_Banner $banner
      * @param int $iterator
-     * @param string $bannerPosition
      * @return bool
      */
-    public function isBannerNeedBeShowed($iterator, $bannerPosition)
+    public function isBannerNeedBeShowed(Sapiha_Banner_Block_Catalog_Banner $banner, $iterator)
     {
+        $bannerPosition = $banner->getPosition($this->getMode());
         $currentPage = $this->_productCollection->getCurPage();
         $startPossition = ($currentPage > 1) ? 12 * ($currentPage - 1) : 0 ;
         $currentIteration = $startPossition + $iterator;
+        $isBannerActive = (bool) $banner->getData('is_active');
 
-        return $currentPage <= 3 && $bannerPosition == $currentIteration;
+        return $currentPage <= 3 && $bannerPosition == $currentIteration && $isBannerActive;
+    }
+
+    /**
+     * Print banner
+     *
+     * @param Sapiha_Banner_Block_Catalog_Banner $banner
+     * @return string
+     */
+    public function printBanner($banner)
+    {
+        return $banner->toHtml();
     }
 }

@@ -26,9 +26,16 @@ class Sapiha_Banner_IndexController extends Mage_Core_Controller_Front_Action
             }
 
         } else {
-            $model->setData('banner_id', $id );
-            $model->setData('click_count', 1);
-            $model->save();
+
+            try {
+                $model->setData('banner_id', $id );
+                $model->setData('click_count', 1);
+                $model->save();
+
+            } catch (Exception $e) {
+                Mage::logException($e);
+                $this->_getSession()->addError($e->getMessage());
+            }
         }
     }
 }

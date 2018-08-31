@@ -2,6 +2,7 @@
 
 class Sapiha_Banner_Model_Observer
 {
+
     const BANNER_TYPE = "sapiha_banner/catalog_banner";
 
     /**
@@ -15,9 +16,8 @@ class Sapiha_Banner_Model_Observer
         if ($observer->getObject()->getData('type') == self::BANNER_TYPE) {
             $parameters = $observer->getObject()->getWidgetParameters();
             $imageName = substr(strrchr($parameters['image'], '/'), 1)  ;
-            $image = Mage::getModel('sapiha_banner/image');
-            unlink($image->getImagePath('grid') . DS . $imageName);
-            unlink($image->getImagePath('list') . DS . $imageName);
+            $imageProcessor = Mage::getModel('sapiha_banner/image_processor');
+            $imageProcessor->deleteImages($imageName);
         }
     }
 
@@ -32,7 +32,8 @@ class Sapiha_Banner_Model_Observer
         if($observer->getObject()->getData('type') == self::BANNER_TYPE) {
             $widgetParameters = $observer->getObject()->getWidgetParameters();
             $post = Mage::app()->getRequest()->getPost();
-            $image = Mage::getModel('sapiha_banner/image');
+            $imageProcessor = Mage::getModel('sapiha_banner/image_processor');
+            $image = $imageProcessor->getImage();
             $widgetInstance = $observer->getDataObject();
             $tmpImageName = Mage::getSingleton('adminhtml/session')->getTmpImageName();
 
@@ -43,9 +44,8 @@ class Sapiha_Banner_Model_Observer
                 $widgetParameters['instance_id'] = Mage::helper('sapiha_banner')->getWidgetIncrementId();
             }
 
-            if ($post['gridx'] !== "") {
-                $widgetParameters['image'] = $image->getImageUrl('grid', $image->getTmpImage($tmpImageName));
-                $image->saveFinal($post);
+            if ($imageProcessor->processSave($post)) {
+                $widgetParameters['image'] = $image->getImageUrl('grid', $tmpImageName);
                 if ($widgetParameters['image'] !== null) {
                     $widgetParameters['image'] = $image->getImageUrl('grid', $image->getName());
                     $widgetParameters['imageList'] = $image->getImageUrl('list', $image->getName());

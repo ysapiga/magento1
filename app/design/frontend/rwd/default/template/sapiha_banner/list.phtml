@@ -20,10 +20,9 @@ $_helper = $this->helper('catalog/output');
                 <li class = 'item'>
                     <?php if (count($this->getBanners())>0) : ?>
                         <?php foreach ($this->getBanners() as $banner):?>
-
-                            <?php if($this->isBannerNeedBeShowed($listIterator, $this->getChild($banner)->getData('grid_position')) && $this->getChild($banner)->getData('is_active') != 0) : ?>
+                            <?php if ($this->isBannerNeedBeShowed($this->getChild($banner), $listIterator)) : ?>
                                 <li class = 'item'>
-                                <?php echo $this->getChild($banner)->printBanner($this->getChild($banner)->getData(), $this->getMode());?>
+                                    <?php echo $this->printBanner($this->getChild($banner)->setMode($this->getMode()));?>
                                 </li>
                             <?php endif;?>
                         <?php endforeach;?>
@@ -105,9 +104,9 @@ $_helper = $this->helper('catalog/output');
                 <?php endif ?>
                    <?php if (count($this->getBanners())>0) : ?>
                         <?php foreach ($this->getBanners() as $banner):?>
-                            <?php if ($this->isBannerNeedBeShowed($i, $this->getChild($banner)->getData('grid_position')) && $this->getChild($banner)->getData('is_active') != 0) : ?>
+                            <?php if ($this->isBannerNeedBeShowed($this->getChild($banner), $i)) : ?>
                             <li class="item">
-                                <?php echo $this->getChild($banner)->printBanner($this->getChild($banner)->getData(), $this->getMode());?>
+                                <?php echo $this->printBanner($this->getChild($banner)->setMode($this->getMode()));?>
                                 <?php //$i++ ?>
                             </li>
                             <?php endif;?>

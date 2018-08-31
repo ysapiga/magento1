@@ -16,12 +16,12 @@ class Sapiha_Banner_Adminhtml_BannerController extends Mage_Adminhtml_Controller
 
         if (isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
             $name = Mage::helper('core')->uniqHash();
-            Mage::getSingleton('adminhtml/session')->setTmpImageName($name);
             $uploader = new Varien_File_Uploader('image');
             $uploader->setFilesDispersion(false);
             $uploader->setAllowedExtensions($image->getAllowedImageExtensions());
             $uploader->setAllowRenameFiles(true);
             $image->setName("$name." . $uploader->getFileExtension());
+            Mage::getSingleton('adminhtml/session')->setTmpImageName($image->getName());
 
             try {
                 $uploader->save($image->getImagePath('tmp'), $image->getName());

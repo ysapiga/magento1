@@ -4,13 +4,43 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
 {
     /**
      * Banners images folder
+     *
      * @var string
      */
     const IMAGES_MAIN_DIR = 'sapiha_banner';
+
     /**
      * @var array
      */
     private $allowedImageExtensions = ['jpg', 'jpeg', 'png'];
+
+    /**
+     * Required croop coords
+     *
+     * @var array
+     */
+    private $forCropCoords = ['x', 'y', 'width', 'height'];
+
+    /**
+     * Get required coords
+     *
+     * @return array
+     */
+    public function getForCropCoords()
+    {
+        return $this->forCropCoords;
+    }
+
+    /**
+     * Set coords
+     *
+     * @param array $coords
+     * @return void
+     */
+    public function setForCropCoords(array $coords)
+    {
+        $this->forCropCoords = $coords;
+    }
 
     /**
      * Get allowed image extensions
@@ -45,7 +75,6 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      */
     public function getImageUrl($type, $name = '')
     {
-
         $path = Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type;
 
         return ($name == '') ? $path : $path . DS . $name;
@@ -54,7 +83,7 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     /**
      * Image size validation
      *
-     * @param $image
+     * @param string $image
      * @return bool
      */
     public function validateImageSize($image)
@@ -65,103 +94,61 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     /**
      * Crop images
      *
-     * @param array $gridCoords
-     * @param array $listCoords
-     * @param string $fileExtension
+     * @param array $coords
+     * @param string $tmpImageName
+     * @param $type
      * @return void
      */
-    public function cropImages(array $gridCoords, array $listCoords)
+    public function cropImages(array $coords, $tmpImageName, $type)
     {
         $fileManager = new Varien_Io_File();
-        $gridDirName = $this->getImagePath('grid');
-        $listDirName = $this->getImagePath('list');
-        $tmpImageName = Mage::getSingleton('adminhtml/session')->getTmpImageName();
+        $dirName = $this->getImagePath($type);
 
-
-        if (!is_dir($gridDirName)) {
-            $fileManager->mkdir($gridDirName);
+        if (!is_dir($dirName)) {
+            $fileManager->mkdir($dirName);
         }
 
-        if (!is_dir($listDirName)) {
-            $fileManager->mkdir($listDirName);
-        }
-
-        $image = $this->getTmpImagePath($tmpImageName);
+        $image = $this->getImagePath('tmp', $tmpImageName);
+        $this->setName($tmpImageName);
         $fileExtension = $this->getImgExtension($tmpImageName);
-        $newImageName = Mage::helper('core')->uniqHash() . '.' . $fileExtension;
-        $this->setName($newImageName);
 
         if ($fileExtension =='png') {
             $im = imagecreatefrompng($image);
-            $croppedListImg = imagecrop($im, $listCoords);
-            $croppedGridImg = imagecrop($im, $gridCoords);
-            imagepng($croppedGridImg, $this->getImagePath('grid', $newImageName));
-            imagepng($croppedListImg, $this->getImagePath('list', $newImageName));
+            $croppedImg = imagecrop($im, $coords);
+            imagepng($croppedImg, $this->getImagePath($type, $tmpImageName));
         } elseif ($fileExtension =='jpeg' || $fileExtension =='jpg' ) {
             $im = imagecreatefromjpeg($image);
-            $croppedListImg = imagecrop($im, $listCoords);
-            $croppedGridImg = imagecrop($im, $gridCoords);
-            imagejpeg($croppedGridImg, $this->getImagePath('grid', $newImageName));
-            imagejpeg($croppedListImg, $this->getImagePath('list', $newImageName));
+            $croppedListImg = imagecrop($im, $coords);
+            imagejpeg($croppedListImg, $this->getImagePath($type, $tmpImageName));
         }
-    }
-
-    /**
-     * Get tmp image filename
-     *
-     * @return string
-     */
-    public function getTmpImage($instanceId)
-    {
-        $image = false;
-        $dirFiles =  scandir(Mage::getBaseDir('media') . DS .self::IMAGES_MAIN_DIR . DS . 'tmp' . DS);
-
-        foreach ($dirFiles as $file) {
-            if (strpos($file, $instanceId ) !== false){
-                $image = $file;
-                break;
-            }
-        }
-
-        return $image;
-    }
-
-    /**
-     * Get tmp image path
-     *
-     * @return string
-     */
-    public function getTmpImagePath($instanceId)
-    {
-        return Mage::getBaseDir('media') . DS . self::IMAGES_MAIN_DIR . DS . 'tmp'. DS . $this->getTmpImage($instanceId);
     }
 
     /**
      * Get image extension
      *
+     * @param string $imageName
      * @return string
      */
-    public function getImgExtension($instanceId)
+    public function getImgExtension($imageName)
     {
-        return substr(stristr($this->getTmpImage($instanceId), "."), 1);
+        return substr(stristr($imageName, "."), 1);
     }
 
     /**
      * Prepare coordinates before cropping
      *
-     * @param sting $type
      * @param array $postData
+     * @param string $type
      * @return array
      */
-    public function prepareCoords($type, $postData)
+    public function prepareCoords($postData, $type)
     {
         $result = [];
 
         foreach ($postData as $key =>$element) {
-            if(strpos($key, $type) !== false){
-                $result [substr($key, 4)] = $element;
-            } else if ($key == 'instance_id') {
-                $result ['instance_id'] = $element ;
+
+            if (in_array($key, $this->getForCropCoords()) && strpos($key, $type) !== false) {
+                $result [str_replace($type, '', $key)] = $element;
             }
         }
 
@@ -171,22 +158,34 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     /**
      * Save cropped images
      *
-     * @param $postData
-     * @param $fileExtension
+     * @param array $postData
+     * @param string $imageName
+     * @param string $type
      * @return void
      */
-    public function saveFinal($postData)
+    public function saveFinal($postData, $imageName, $type)
     {
-        if ($postData['gridx'] != ''){
-
-            try {
-                $this->cropImages($this->prepareCoords('grid', $postData), $this->prepareCoords(   'list', $postData));
-                $tmpImageName = Mage::getSingleton('adminhtml/session')->getTmpImageName();
-                unlink($this->getTmpImagePath($tmpImageName));
-
-            } catch (Exception $e) {
-                $e->getMessage();
-            }
+        try {
+            $this->cropImages($this->prepareCoords($postData, $type), $imageName, $type);
+        } catch (Exception $e) {
+            $e->getMessage();
         }
+    }
+
+    /**
+     * Delete image
+     *
+     * @param string $type
+     * @param string $name
+     * @return void
+     */
+    public function deleteImageFile($type, $name)
+    {
+        try {
+            unlink($this->getImagePath($type) . DS . $name);
+        } catch (Exception $e) {
+            Mage::logException($e);
+        }
+
     }
 }
