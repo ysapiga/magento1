@@ -7,7 +7,7 @@ class Sapiha_Banner_Block_Catalog_List extends Mage_Catalog_Block_Product_List
      *
      * @return array
      */
-    public function getBanners()
+    protected function getBanners()
     {
         $banners = [];
 
@@ -27,9 +27,10 @@ class Sapiha_Banner_Block_Catalog_List extends Mage_Catalog_Block_Product_List
      * @param int $iterator
      * @return bool
      */
-    public function isBannerNeedBeShowed(Sapiha_Banner_Block_Catalog_Banner $banner, $iterator)
+    protected function isBannerNeedBeShowed(Sapiha_Banner_Block_Catalog_Banner $banner, $iterator)
     {
-        $bannerPosition = $banner->getPosition($this->getMode());
+        $banner->setMode($this->getMode());
+        $bannerPosition = $banner->getPosition();
         $currentPage = $this->_productCollection->getCurPage();
         $startPossition = ($currentPage > 1) ? 12 * ($currentPage - 1) : 0 ;
         $currentIteration = $startPossition + $iterator;
@@ -44,8 +45,9 @@ class Sapiha_Banner_Block_Catalog_List extends Mage_Catalog_Block_Product_List
      * @param Sapiha_Banner_Block_Catalog_Banner $banner
      * @return string
      */
-    public function printBanner($banner)
+    protected function printBanner($banner)
     {
+        $banner->setMode($this->getMode());
         return $banner->toHtml();
     }
 }

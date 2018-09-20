@@ -25,7 +25,7 @@ class Sapiha_Banner_Adminhtml_BannerController extends Mage_Adminhtml_Controller
 
             try {
                 $uploader->save($image->getImagePath('tmp'), $image->getName());
-                $uploadedFile = $image->getImageUrl('tmp', $image->getName());
+                $uploadedFile = Mage::getBaseUrl('media') . $image->getShortImagePath('tmp', $image->getName());
                 $response['result'] = true;
                 $response['image'] = $uploadedFile;
                 $imagePath = $image->getImagePath('tmp', $image->getName());

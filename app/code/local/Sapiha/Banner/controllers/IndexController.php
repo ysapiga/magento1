@@ -13,29 +13,20 @@ class Sapiha_Banner_IndexController extends Mage_Core_Controller_Front_Action
         $id = (int)$this->getRequest()->getParam('id');
         $model = Mage::getModel('sapiha_banner/banner')->load($id, 'banner_id');
 
-        if ( $model->getId() != null) {
-
-            try{
-                $clickAmount = $model->getClickCount();
-                $clickAmount++;
-                $model->setId($model->getId())->setClickCount($clickAmount)->save();
-
-            } catch (Exception $e) {
-                Mage::logException($e);
-                $this->_getSession()->addError($e->getMessage());
-            }
-
+        if ($model->getId() != null) {
+            $clickAmount = $model->getClickCount();
+            $clickAmount++;
+            $model->setId($model->getId())->setClickCount($clickAmount);
         } else {
+            $model->setData('banner_id', $id );
+            $model->setData('click_count', 1);
+        }
 
-            try {
-                $model->setData('banner_id', $id );
-                $model->setData('click_count', 1);
-                $model->save();
-
-            } catch (Exception $e) {
-                Mage::logException($e);
-                $this->_getSession()->addError($e->getMessage());
-            }
+        try {
+            $model->save();
+        } catch (Exception $e) {
+            Mage::logException($e);
+            $this->_getSession()->addError($e->getMessage());
         }
     }
 }

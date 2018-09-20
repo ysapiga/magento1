@@ -22,7 +22,7 @@ $_helper = $this->helper('catalog/output');
                         <?php foreach ($this->getBanners() as $banner):?>
                             <?php if ($this->isBannerNeedBeShowed($this->getChild($banner), $listIterator)) : ?>
                                 <li class = 'item'>
-                                    <?php echo $this->printBanner($this->getChild($banner)->setMode($this->getMode()));?>
+                                    <?php echo $this->printBanner($this->getChild($banner));?>
                                 </li>
                             <?php endif;?>
                         <?php endforeach;?>
@@ -106,7 +106,7 @@ $_helper = $this->helper('catalog/output');
                         <?php foreach ($this->getBanners() as $banner):?>
                             <?php if ($this->isBannerNeedBeShowed($this->getChild($banner), $i)) : ?>
                             <li class="item">
-                                <?php echo $this->printBanner($this->getChild($banner)->setMode($this->getMode()));?>
+                                <?php echo $this->printBanner($this->getChild($banner));?>
                                 <?php //$i++ ?>
                             </li>
                             <?php endif;?>

@@ -33,10 +33,21 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Renderer_Banner_Image extends Varien_
                 . ' alt="' . $this->getValue() . '" height="22" width="22" class="small-image-preview v-middle" />'
                 . '</a> ';
         }
+
         $this->setClass('input-file');
         $html .= parent::getElementHtml();
 
         return $html;
+    }
+
+    /**
+     * Return name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return  $this->getData('name');
     }
 
     /**
@@ -54,18 +65,8 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Renderer_Banner_Image extends Varien_
      *
      * @return string
      */
-    protected function _getUrl()
+    private function _getUrl()
     {
         return $this->getValue();
-    }
-
-    /**
-     * Return name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return  $this->getData('name');
     }
 }

@@ -36,7 +36,7 @@ class Sapiha_Banner_Block_Adminhtml_Banner_Edit_Options extends Mage_Adminhtml_B
         $fieldset->addType('banner_image', 'Sapiha_Banner_Block_Adminhtml_Banner_Renderer_Banner_Image');
         $fieldset->addField('image', 'banner_image', [
             'name' => 'parameters[image]',
-            'value' => !empty($parameters['image']) ? $parameters['image'] : '',
+            'value' => !empty($parameters['image']) ? Mage::getBaseUrl('media') . $parameters['image'] : '',
             'view_type' => 'grid',
             'required' => true,
         ]);

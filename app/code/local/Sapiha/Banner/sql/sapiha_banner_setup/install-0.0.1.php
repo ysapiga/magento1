@@ -5,6 +5,7 @@ $installer = $this;
 $tableNews = $installer->getTable('sapiha_banner/table_banner');
 $installer->startSetup();
 $installer->getConnection()->dropTable($tableNews);
+
 $table = $installer->getConnection()
     ->newTable($tableNews)
     ->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, 11, array(
@@ -22,4 +23,5 @@ $table  ->addForeignKey($installer->getFkName('sapiha_banner/table_banner', 'ban
     'banner_id', $installer->getTable('widget/widget_instance'), 'instance_id',
     Varien_Db_Ddl_Table::ACTION_CASCADE,Varien_Db_Ddl_Table::ACTION_CASCADE);
 $installer->getConnection()->createTable($table);
+
 $installer->endSetup();

@@ -73,9 +73,9 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
      * @param string $name
      * @return string
      */
-    public function getImageUrl($type, $name = '')
+    public function getShortImagePath($type, $name = '')
     {
-        $path = Mage::getBaseUrl('media') . self::IMAGES_MAIN_DIR . DS . $type;
+        $path = self::IMAGES_MAIN_DIR . DS . $type;
 
         return ($name == '') ? $path : $path . DS . $name;
     }
@@ -90,71 +90,6 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
     {
         return !(getimagesize($image)[0] < 800 || getimagesize($image)[1] < 800);
     }
-
-    /**
-     * Crop images
-     *
-     * @param array $coords
-     * @param string $tmpImageName
-     * @param $type
-     * @return void
-     */
-    public function cropImages(array $coords, $tmpImageName, $type)
-    {
-        $fileManager = new Varien_Io_File();
-        $dirName = $this->getImagePath($type);
-
-        if (!is_dir($dirName)) {
-            $fileManager->mkdir($dirName);
-        }
-
-        $image = $this->getImagePath('tmp', $tmpImageName);
-        $this->setName($tmpImageName);
-        $fileExtension = $this->getImgExtension($tmpImageName);
-
-        if ($fileExtension =='png') {
-            $im = imagecreatefrompng($image);
-            $croppedImg = imagecrop($im, $coords);
-            imagepng($croppedImg, $this->getImagePath($type, $tmpImageName));
-        } elseif ($fileExtension =='jpeg' || $fileExtension =='jpg' ) {
-            $im = imagecreatefromjpeg($image);
-            $croppedListImg = imagecrop($im, $coords);
-            imagejpeg($croppedListImg, $this->getImagePath($type, $tmpImageName));
-        }
-    }
-
-    /**
-     * Get image extension
-     *
-     * @param string $imageName
-     * @return string
-     */
-    public function getImgExtension($imageName)
-    {
-        return substr(stristr($imageName, "."), 1);
-    }
-
-    /**
-     * Prepare coordinates before cropping
-     *
-     * @param array $postData
-     * @param string $type
-     * @return array
-     */
-    public function prepareCoords($postData, $type)
-    {
-        $result = [];
-
-        foreach ($postData as $key =>$element) {
-
-            if (in_array($key, $this->getForCropCoords()) && strpos($key, $type) !== false) {
-                $result [str_replace($type, '', $key)] = $element;
-            }
-        }
-
-        return $result;
-    }
-
     /**
      * Save cropped images
      *
@@ -186,6 +121,68 @@ class Sapiha_Banner_Model_Image extends Mage_Core_Model_Abstract
         } catch (Exception $e) {
             Mage::logException($e);
         }
+    }
 
+    /**
+     * Crop images
+     *
+     * @param array $coords
+     * @param string $tmpImageName
+     * @param $type
+     * @return void
+     */
+    private function cropImages(array $coords, $tmpImageName, $type)
+    {
+        $fileManager = new Varien_Io_File();
+        $dirName = $this->getImagePath($type);
+
+        if (!is_dir($dirName)) {
+            $fileManager->mkdir($dirName);
+        }
+
+        $image = $this->getImagePath('tmp', $tmpImageName);
+        $this->setName($tmpImageName);
+        $fileExtension = $this->getImgExtension($tmpImageName);
+
+        if ($fileExtension == 'png') {
+            $im = imagecreatefrompng($image);
+            $croppedImg = imagecrop($im, $coords);
+            imagepng($croppedImg, $this->getImagePath($type, $tmpImageName));
+        } elseif ($fileExtension == 'jpeg' || $fileExtension == 'jpg') {
+            $im = imagecreatefromjpeg($image);
+            $croppedListImg = imagecrop($im, $coords);
+            imagejpeg($croppedListImg, $this->getImagePath($type, $tmpImageName));
+        }
+    }
+
+    /**
+     * Get image extension
+     *
+     * @param string $imageName
+     * @return string
+     */
+    private function getImgExtension($imageName)
+    {
+        return substr(stristr($imageName, "."), 1);
+    }
+
+    /**
+     * Prepare coordinates before cropping
+     *
+     * @param array $postData
+     * @param string $type
+     * @return array
+     */
+    private function prepareCoords($postData, $type)
+    {
+        $result = [];
+
+        foreach ($postData as $key =>$element) {
+            if (in_array($key, $this->getForCropCoords()) && strpos($key, $type) !== false) {
+                $result [str_replace($type, '', $key)] = $element;
+            }
+        }
+
+        return $result;
     }
 }
