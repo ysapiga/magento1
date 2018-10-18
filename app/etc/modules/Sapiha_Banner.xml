@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <modules>
+        <Sapiha_Banner>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Sapiha_Banner>
+    </modules>
+</config>

@@ -1,0 +1,18 @@
+<span id="mySpan" class="mySpan">
+   <a id=".show-modal-btn">
+       <img class="bannerImg" id="bannerImg" src="<?php echo $this->getImage(); ?>" width="100%"/>
+   </a>
+</span>
+<div id="openModal" class="modalDialog">
+    <div class="modalContent">
+        <a title="Закрыть" class="close">X</a>
+        <div class="modalHead">
+            <h2><?php echo $this->getData('name')?></h2>
+        </div>
+        <div class="modalBody">
+            <p><?php echo $this->getData('content') ?></p>
+            <br>
+            <a href="<?php echo $this->getData('link') ?>" class="btn ajaxRequest" target="_blank" data-id = "<?php echo $this->getData('instance_id') ?>"><?php echo $this->__("ПЕРЕЙТИ"); ?></a>
+        </div>
+    </div>
+</div>
