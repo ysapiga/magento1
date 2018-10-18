@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<layout>
+    <default>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+    </default>
+    <sapiha_news_index_index>
+        <reference name = "content">
+            <block type = "core/template" template = "sapiha_news/index.phtml" />
+        </reference>
+    </sapiha_news_index_index>
+    <sapiha_news_index_newslist>
+        <reference name = "content">
+            <block type = "Sapiha_News_Block_News" template = "sapiha_news/news.phtml"/>
+        </reference>
+    </sapiha_news_index_newslist>
+    <sapiha_news_index_newsview>
+        <reference name = "content">
+            <block type = "Sapiha_News_Block_News" template = "sapiha_news/view.phtml"/>
+        </reference>
+    </sapiha_news_index_newsview>
+</layout>

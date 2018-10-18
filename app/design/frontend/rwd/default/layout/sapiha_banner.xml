@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<layout>
+    <catalog_category_view>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/sapiha_banner.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/sapiha_banner/banner.js</name>
+            </action>
+        </reference>
+        <reference name="content">
+            <remove name="product_list" />
+            <block type="sapiha_banner/catalog_list" name="catalog.banner" before="category.products" template = 'sapiha_banner/list.phtml'>
+                <block type="core/text_list" name="product_list.name.after" as="name.after" />
+                <block type="core/text_list" name="product_list.after" as="after" />
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                <!-- Since the addColumnCountLayoutDepend does not work, we are manually setting the max columns -->
+                <action method="setColumnCount"><count>4</count></action>
+            </block>
+        </reference>
+    </catalog_category_view>
+</layout>

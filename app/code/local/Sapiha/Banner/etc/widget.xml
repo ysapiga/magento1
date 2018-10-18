@@ -1,0 +1,22 @@
+<widgets>
+    <banner type="sapiha_banner/catalog_banner" translate="name description" module="sapiha_banner">
+        <name>Banner</name>
+        <description>Banner in products block</description>
+        <is_email_compatible>1</is_email_compatible>
+        <parameters>
+            <form translate="label">
+                <helper_block>
+                    <type>sapiha_banner/adminhtml_banner_edit_options</type>
+                </helper_block>
+                <sort_order>10</sort_order>
+            </form>
+            <is_active translate="label">
+                <label>Enable banner</label>
+                <visible>1</visible>
+                <required>1</required>
+                <type>select</type>
+                <source_model>adminhtml/system_config_source_yesno</source_model>
+            </is_active>
+        </parameters>
+    </banner>
+</widgets>
